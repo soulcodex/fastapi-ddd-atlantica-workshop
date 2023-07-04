@@ -5,9 +5,11 @@ name = "pypi"
 
 [packages]
 fastapi = {extras = ["all"], version = "*"}
-injector = "*"
-fastapi-injector = "*"
 aiomysql = "*"
+pyway = "*"
+aiologger = "*"
+pyxdi = "*"
+anyio = "*"
 
 [dev-packages]
 

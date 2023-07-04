@@ -24,6 +24,11 @@ shoes-api-run: ## Bootstrap and run shoes api dev server.
 	@make __init
 	cd $$SHOES_API_ROOT && make start
 
+.PHONY: shoes-api-docker-stop
+shoes-api-docker-stop: ## Down docker containers related with the shoes service.
+	@make __init
+	cd $$SHOES_API_ROOT && make stop
+
 .PHONY: shoes-api-package-add
 shoes-api-package-add: ## Add package to our shoes api deps.
 	@make __init

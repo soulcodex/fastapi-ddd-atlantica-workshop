@@ -6,4 +6,12 @@ class InvalidShoeSize(DomainError):
 
     @classmethod
     def from_shoe_size(cls, size: int) -> 'InvalidShoeSize':
-        return InvalidShoeSize(message=cls.__message__, context={'shoe_size': size})
+        return cls(message=cls.__message__, context={'shoe_size': size})
+
+
+class ShoeNotExist(DomainError):
+    __message__ = 'Shoe not exist.'
+
+    @classmethod
+    def from_shoe_id(cls, shoe_id: str) -> 'ShoeNotExist':
+        return ShoeNotExist(message=cls.__message__, context={'shoe_id': shoe_id})

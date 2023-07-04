@@ -2,22 +2,7 @@ import aiomysql
 from typing import Text
 
 
-async def dial_connection(user: Text, password: Text, host: Text, port: int, database: Text) -> None:
-    con: aiomysql.Connection = aiomysql.connect(
-        host=host,
-        user=user,
-        password=password,
-        db=database,
-        port=port
-    )
-
-    try:
-        await con.ping()
-    except e:
-        raise Exception("Connection is closed") from e
-
-
-async def create_async_reader(user: Text, password: Text, host: Text, port: int, database: Text) -> aiomysql.Connection:
+async def create_mysql_reader(user: Text, password: Text, host: Text, port: int, database: Text) -> aiomysql.Connection:
     try:
         con: aiomysql.Connection = aiomysql.connect(
             host=host,
@@ -32,18 +17,18 @@ async def create_async_reader(user: Text, password: Text, host: Text, port: int,
         await con.ping()
 
         return con
-    except e:
-        raise Exception("Error creating async mysql reader") from e
+    except aiomysql.Error as e:
+        raise Exception from e
 
 
-async def create_async_writer(user: Text, password: Text, host: Text, port: int, database: Text) -> aiomysql.Connection:
+async def create_mysql_writer(user: Text, password: Text, host: Text, port: Text, database: Text) -> aiomysql.Connection:
     try:
-        con: aiomysql.Connection = aiomysql.connect(
+        con: aiomysql.Connection = await aiomysql.connect(
             host=host,
             user=user,
             password=password,
             db=database,
-            port=port,
+            port=int(port),
             autocommit=False,
             connect_timeout=180,
             cursorclass=aiomysql.DictCursor
@@ -52,5 +37,5 @@ async def create_async_writer(user: Text, password: Text, host: Text, port: int,
         await con.ping()
 
         return con
-    except e:
-        raise Exception("Error creating async mysql writer") from e
+    except aiomysql.Error as e:
+        raise Exception from e

@@ -1,13 +1,31 @@
+import enum
 from shoes.domain.errors import InvalidShoeSize
+from shared.domain.types.boolean_value import BoolValue
 from shared.domain.types.string_value import StringValue
-from shared.domain.types.integer_range_value import RangeValue
+from shared.domain.types.integer_value import RangeValue, IntegerValue, PriceValue
 
 
 class ShoeName(StringValue):
     pass
 
 
-class ShoeId(str):
+class ShoeColor(enum.Enum):
+    RED = 'red'
+    GREEN = 'green'
+    WHITE = 'white'
+    BLACK = 'black'
+    YELLOW = 'yellow'
+
+
+class ShoePrice(PriceValue):
+    pass
+
+
+class ShoeActive(BoolValue):
+    pass
+
+
+class ShoeId(StringValue):
     pass
 
 

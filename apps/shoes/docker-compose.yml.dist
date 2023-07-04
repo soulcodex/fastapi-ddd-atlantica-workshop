@@ -1,0 +1,19 @@
+version: "3.1"
+
+services:
+  mysql:
+    image: mysql:8.0.33
+    container_name: shoes-fastapi-mysql
+    command: mysqld --sql_mode="NO_ENGINE_SUBSTITUTION"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=shoes_api
+      - MYSQL_USER=shoes_master
+      - MYSQL_PASSWORD=can_do_all
+    ports:
+      - "3301:3306"
+
+volumes:
+  mysql-data:

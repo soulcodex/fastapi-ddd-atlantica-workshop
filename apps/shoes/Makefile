@@ -1,4 +1,5 @@
 SHELL := /bin/bash
+DOCKER_COMPOSE := docker compose -f docker-compose.yml
 
 .PHONY: help
 help:
@@ -6,11 +7,18 @@ help:
 
 .PHONY: setup
 setup: ## Make shoes api setup
+	[ -f ./docker-compose.yml ] || cp docker-compose.yml.dist docker-compose.yml
 	[ -f ./.env ] || cp .env.example .env
+	$(DOCKER_COMPOSE) up -d --build --force-recreate
+
+.PHONY: stop
+stop: ## Stop project docker containers.
+	$(DOCKER_COMPOSE) down --remove-orphans
 
 .PHONY: start
 start: ## Bootstrap and run shoes api
 	pipenv install
+	pipenv run pyway migrate
 	pipenv run uvicorn main:app --reload --loop asyncio --reload-include $$PWD/../../apps --reload-include $$PWD/../../shoes --reload-include $$PWD/../../shared
 
 .PHONY: install-dep
@@ -24,7 +32,9 @@ remove-dep: ## Remove a specific dependency using pipenv environment deps file.
 	PS3="Select the package to uninstall: " && \
 	select pkg in $$(yq '.packages * .dev-packages|keys|join(" ")' -oy -p toml Pipfile); \
 	do \
-	  [ ! -v $$pkg ] || echo "Invalid package selected"; exit; \
-	  pipenv uninstall $$pkg; \
-	  exit; \
+	  if [ ! -z $$pkg ]; then \
+	  	pipenv uninstall $$pkg; \
+	  	exit; \
+	  fi; \
+	  echo "Invalid package selected" && exit; \
   	done

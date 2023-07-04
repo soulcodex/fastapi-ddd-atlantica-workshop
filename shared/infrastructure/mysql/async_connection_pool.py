@@ -9,5 +9,10 @@ class AsyncConnectionPool:
         self.reader = writer if reader is None else reader
 
     @classmethod
-    def only_writer(cls, writer: Connection) -> 'AsyncConnectionPool':
+    async def only_writer(cls, writer: Connection) -> 'AsyncConnectionPool':
         return AsyncConnectionPool(writer=writer)
+
+    async def close(self) -> None:
+        await self.writer.close()
+        if self.reader is not None:
+            await self.reader.close()

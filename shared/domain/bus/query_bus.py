@@ -1,15 +1,13 @@
 from logging import Logger
 from abc import ABC, abstractmethod
 from shared.domain.bus.dto import Dto
-from typing import Dict, Any, Text, Awaitable, Coroutine, Callable, Type, TypeVar
-
-T = TypeVar('T')
+from typing import Dict, Any, Text, Awaitable, Coroutine, Callable, Type
 
 
 class QueryHandler(ABC):
 
     @abstractmethod
-    def handle(self, query: Dto) -> T:
+    def handle(self, query: Dto) -> Any:
         pass
 
 
@@ -19,7 +17,7 @@ class QueryBus(ABC):
         pass
 
     @abstractmethod
-    def ask(self, query: Dto) -> T:
+    def ask(self, query: Dto) -> Any:
         pass
 
 
@@ -29,7 +27,7 @@ class AwaitableQueryBus(QueryBus):
         self.logger = logger
         self.handlers: Dict[Text, QueryHandler] = dict()
 
-    def register_query(self, query: Type[Dto], handler: QueryHandler) -> None:
+    async def register_query(self, query: Type[Dto], handler: QueryHandler) -> None:
         query_name = query.id()
 
         if query_name in self.handlers:
