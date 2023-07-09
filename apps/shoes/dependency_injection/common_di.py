@@ -2,12 +2,13 @@ import pyxdi
 from aiologger import Logger
 from typing import AsyncIterator
 from shared.domain.bus import query_bus, command_bus
-from shared.domain.types import identifier_providers
 from shared.domain import environment_handler as environment
+from shared.domain.types import identifier_provider, time_provider
 
 import shared.infrastructure.mysql.async_connection_pool as mysql
 import shared.infrastructure.mysql.async_helpers as mysql_helpers
 import shared.infrastructure.identifier_providers as id_providers
+import shared.infrastructure.time_providers as time_providers
 
 
 class CommonDi(pyxdi.Module):
@@ -45,9 +46,13 @@ class CommonDi(pyxdi.Module):
         writer.close()
 
     @pyxdi.provider(scope='request')
-    async def configure_uuid_provider(self) -> AsyncIterator[identifier_providers.UuidProvider]:
+    async def configure_uuid_provider(self) -> AsyncIterator[identifier_provider.UuidProvider]:
         yield id_providers.RandomUuidProvider()
 
     @pyxdi.provider(scope='request')
-    async def configure_ulid_provider(self) -> AsyncIterator[identifier_providers.UlidProvider]:
+    async def configure_ulid_provider(self) -> AsyncIterator[identifier_provider.UlidProvider]:
         yield id_providers.RandomUlidProvider()
+
+    @pyxdi.provider(scope='request')
+    async def configure_time_provider(self) -> AsyncIterator[time_provider.TimeProvider]:
+        yield time_providers.SystemTimeProvider()

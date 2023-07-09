@@ -3,7 +3,7 @@ import ulid
 
 from typing import Optional
 
-from shared.domain.types.identifier_providers import UuidProvider, UlidProvider, Uuid, Ulid
+from shared.domain.types.identifier_provider import UuidProvider, UlidProvider, Uuid, Ulid
 
 
 class RandomUuidProvider(UuidProvider):
