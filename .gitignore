@@ -1,5 +1,6 @@
 .idea/
 .env
+__pycache__
 docker-compose.yaml
 docker-compose.yml
 docker-compose.*.yaml
