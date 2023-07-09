@@ -51,7 +51,7 @@ class Shoe:
         )
 
 
-class ShoeRepository(ABC):
+class ShoesRepository(ABC):
 
     @abstractmethod
     async def find(self, shoe_id: ShoeId) -> 'Shoe':

@@ -4,8 +4,8 @@ from dataclasses import asdict
 from pyxdi.ext.fastapi import Inject
 from fastapi import APIRouter, HTTPException
 from apps.shoes.ui.shoe import Shoe, ShoeCollection
-from apps.shoes.dependency_injection.shoes_di import ShoesQueryBus
 
+from shoes.domain.types import ShoesQueryBus
 from shoes.domain.errors import ShoeNotExist, InvalidShoeSize
 from shoes.application import find_shoe_by_id, shoe_response
 

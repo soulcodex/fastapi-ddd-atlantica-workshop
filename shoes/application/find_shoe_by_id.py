@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from shared.domain.bus.dto import Dto
-from shoes.domain.shoe import ShoeRepository
+from shoes.domain.shoe import ShoesRepository
 from shoes.domain.value_object import ShoeId
 from shared.domain.bus.query_bus import QueryHandler
 from shoes.application.shoe_response import ShoeResponse
@@ -17,7 +17,7 @@ class FindShoeByIdQuery(Dto):
 
 class FindShoeByIdQueryHandler(QueryHandler):
 
-    def __init__(self, repository: ShoeRepository):
+    def __init__(self, repository: ShoesRepository):
         self.repository = repository
 
     async def handle(self, query: FindShoeByIdQuery) -> ShoeResponse:

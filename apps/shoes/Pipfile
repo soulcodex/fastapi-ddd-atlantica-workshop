@@ -10,6 +10,7 @@ pyway = "*"
 aiologger = "*"
 pyxdi = "*"
 anyio = "*"
+python-ulid = "*"
 
 [dev-packages]
 

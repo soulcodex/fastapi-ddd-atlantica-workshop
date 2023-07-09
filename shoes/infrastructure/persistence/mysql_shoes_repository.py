@@ -1,11 +1,11 @@
 from typing import Any, Optional, Dict, Text
 from shoes.domain.value_object import ShoeId
 from shoes.domain.errors import ShoeNotExist
-from shoes.domain.shoe import ShoeRepository, Shoe
+from shoes.domain.shoe import ShoesRepository, Shoe
 from shared.infrastructure.mysql.async_repository import MysqlAsyncRepository
 
 
-class MysqlShoesRepository(ShoeRepository, MysqlAsyncRepository):
+class MysqlShoesRepository(ShoesRepository, MysqlAsyncRepository):
     __fields = [
         "shoe_id",
         "name",
