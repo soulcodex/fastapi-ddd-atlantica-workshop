@@ -38,3 +38,8 @@ shoes-api-package-add: ## Add package to our shoes api deps.
 shoes-api-package-remove: ## Remove package from our shoes api deps.
 	@make __init
 	cd $$SHOES_API_ROOT && make remove-dep
+
+.PHONY: shoes-api-unit-test
+shoes-api-unit-test: ## Run unitary tests suite for shoes application.
+	@make __init
+	cd $$SHOES_API_ROOT && make unit-test

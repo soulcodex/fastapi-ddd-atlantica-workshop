@@ -17,6 +17,7 @@ stop: ## Stop project docker containers.
 
 .PHONY: start
 start: ## Bootstrap and run shoes api
+	$(DOCKER_COMPOSE) up -d --build --force-recreate
 	pipenv install
 	pipenv run pyway migrate
 	pipenv run uvicorn main:app --reload --loop asyncio --reload-include $$PWD/../../apps --reload-include $$PWD/../../shoes --reload-include $$PWD/../../shared
@@ -38,3 +39,7 @@ remove-dep: ## Remove a specific dependency using pipenv environment deps file.
 	  fi; \
 	  echo "Invalid package selected" && exit; \
   	done
+
+.PHONY: unit-test
+unit-test:
+	pipenv run pytest --no-header -v ../../tests/shoes/..
