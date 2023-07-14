@@ -31,7 +31,6 @@ async def create_mysql_writer(user: Text, password: Text, host: Text, port: Text
             port=int(port),
             autocommit=False,
             connect_timeout=180,
-            cursorclass=aiomysql.DictCursor
         )
 
         await con.ping()

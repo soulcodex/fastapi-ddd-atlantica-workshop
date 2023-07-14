@@ -11,9 +11,11 @@ aiologger = "*"
 pyxdi = "*"
 anyio = "*"
 python-ulid = "*"
+pypika = "*"
 
 [dev-packages]
 pytest = "*"
+httpx = "*"
 
 [requires]
 python_version = "3.8"

@@ -1,6 +1,6 @@
 from unittest.mock import patch, AsyncMock
 from unittest import IsolatedAsyncioTestCase
-from tests.shoes.stubs.shoe import ShoeMother
+from tests.shoes.domain.shoe import ShoeObjectMother
 
 from shoes.domain.errors import ShoeNotExist
 from shoes.domain.shoe import ShoesRepository
@@ -11,7 +11,7 @@ from shoes.application.find_shoe_by_id import FindShoeByIdQuery, FindShoeByIdQue
 class TestFindShoeByIdQueryHandler(IsolatedAsyncioTestCase):
 
     def setUp(self) -> None:
-        self.shoe_mother = ShoeMother()
+        self.shoe_mother = ShoeObjectMother()
 
     @patch(f'{ShoesRepository.__module__}.{ShoesRepository.__name__}.find')
     async def test_fetch_one_shoe_by_id_successfully(self, repository: AsyncMock) -> None:

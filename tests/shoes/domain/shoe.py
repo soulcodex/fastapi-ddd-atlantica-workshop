@@ -6,7 +6,7 @@ from shared.infrastructure.time_providers import FixedTimeProvider
 from shared.infrastructure.identifier_providers import FixedUlidProvider
 
 
-class ShoeMother:
+class ShoeObjectMother:
 
     def __init__(self):
         self.identifier_provider: UlidProvider = FixedUlidProvider()
@@ -16,7 +16,7 @@ class ShoeMother:
         shoe_id = ShoeId(self.identifier_provider.generate().value)
         now = self.time_provider.now()
         return Shoe.from_primitives(
-            shoe_id=shoe_id.value,
+            id=shoe_id.value,
             name='Nike',
             color='red',
             size=43,

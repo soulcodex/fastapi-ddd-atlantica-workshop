@@ -87,8 +87,13 @@ class OptionalIntegerValue:
 
 class PriceValue(IntegerValue):
 
-    def value(self):
+    @property
+    def value(self) -> float:
         return self._value / 100
 
+    @property
+    def raw_value(self) -> int:
+        return self._value
+
     def value_with_currency(self, currency_symbol: Text):
-        return f'{self.value():.2f} {currency_symbol}'
+        return f'{self.value:.2f} {currency_symbol}'

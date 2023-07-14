@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS `shoes` (
-    `shoe_id`       VARCHAR(26) NOT NULL,
+    `id`            VARCHAR(26) NOT NULL,
     `name`          VARCHAR(255) NOT NULL,
     `color`         VARCHAR(100) NOT NULL,
     `size`          CHAR(10) NOT NULL,

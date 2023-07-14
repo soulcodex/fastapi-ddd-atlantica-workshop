@@ -31,7 +31,7 @@ class Shoe(AggregateRoot):
     @classmethod
     def from_primitives(
             cls,
-            shoe_id: str,
+            id: str,
             name: str,
             color: str,
             size: int,
@@ -41,7 +41,7 @@ class Shoe(AggregateRoot):
             updated_at: datetime
     ) -> 'Shoe':
         return cls(
-            shoe_id=ShoeId(shoe_id),
+            shoe_id=ShoeId(id),
             name=ShoeName(name),
             color=ShoeColor(color),
             size=ShoeSize(size),
@@ -55,5 +55,9 @@ class Shoe(AggregateRoot):
 class ShoesRepository(ABC):
 
     @abstractmethod
-    async def find(self, shoe_id: ShoeId) -> 'Shoe':
+    def find(self, shoe_id: ShoeId) -> 'Shoe':
+        pass
+
+    @abstractmethod
+    def save(self, shoe: 'Shoe') -> None:
         pass
