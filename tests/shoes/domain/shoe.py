@@ -1,3 +1,4 @@
+from typing import Text
 from shoes.domain.shoe import Shoe
 from shoes.domain.value_object import ShoeId
 from shared.domain.types.time_provider import TimeProvider
@@ -24,4 +25,43 @@ class ShoeObjectMother:
             available=True,
             created_at=now,
             updated_at=now
+        )
+
+    def with_size(self, size: int) -> Shoe:
+        shoe = self.random_shoe()
+        return Shoe.from_primitives(
+            id=shoe.id.value,
+            name=shoe.name.value,
+            color=shoe.color.value,
+            size=size,
+            price=shoe.price.raw_value,
+            available=shoe.available.value,
+            created_at=shoe.created_at.value,
+            updated_at=shoe.updated_at.value
+        )
+
+    def with_color(self, color: Text) -> Shoe:
+        shoe = self.random_shoe()
+        return Shoe.from_primitives(
+            id=shoe.id.value,
+            name=shoe.name.value,
+            color=color,
+            size=shoe.size.value,
+            price=shoe.price.raw_value,
+            available=shoe.available.value,
+            created_at=shoe.created_at.value,
+            updated_at=shoe.updated_at.value
+        )
+
+    def not_available(self) -> Shoe:
+        shoe = self.random_shoe()
+        return Shoe.from_primitives(
+            id=shoe.id.value,
+            name=shoe.name.value,
+            color=shoe.color.value,
+            size=shoe.size.value,
+            price=shoe.price.raw_value,
+            available=False,
+            created_at=shoe.created_at.value,
+            updated_at=shoe.updated_at.value
         )

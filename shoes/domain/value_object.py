@@ -1,4 +1,5 @@
 import enum
+from typing import cast
 from shoes.domain.errors import InvalidShoeSize
 from shared.domain.types.boolean_value import BoolValue
 from shared.domain.types.string_value import StringValue
@@ -18,7 +19,10 @@ class ShoeColor(enum.Enum):
 
 
 class ShoePrice(PriceValue):
-    pass
+
+    @staticmethod
+    def min_value() -> int:
+        return 499
 
 
 class ShoeActive(BoolValue):
@@ -31,11 +35,13 @@ class ShoeId(StringValue):
 
 class ShoeSize(RangeValue):
 
-    def max_value(self) -> int:
+    @staticmethod
+    def max_value() -> int:
         return 45
 
-    def min_value(self) -> int:
+    @staticmethod
+    def min_value() -> int:
         return 34
 
     def on_error(self) -> Exception:
-        return InvalidShoeSize.from_shoe_size(self.value)
+        return cast(Exception, InvalidShoeSize.from_shoe_size(self.value))

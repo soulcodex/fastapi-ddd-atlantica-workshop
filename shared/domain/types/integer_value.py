@@ -15,10 +15,12 @@ class RangeValue:
     def value_string(self):
         return str(self.value)
 
-    def max_value(self) -> int:
+    @staticmethod
+    def max_value() -> int:
         pass
 
-    def min_value(self) -> int:
+    @staticmethod
+    def min_value() -> int:
         pass
 
     def on_error(self) -> Exception:

@@ -29,7 +29,7 @@ class TestFindShoeByIdAcceptance:
                 "color": shoe_factory.color.value,
                 "name": shoe_factory.name.value,
                 "price": shoe_factory.price.value_with_currency("€"),
-                "size": str(shoe_factory.size.value)
+                "size": shoe_factory.size.value
             }
 
     async def test_find_one_shoe_by_id_fails_because_shoe_doesnt_exists(

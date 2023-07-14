@@ -16,6 +16,7 @@ pypika = "*"
 [dev-packages]
 pytest = "*"
 httpx = "*"
+Faker = "*"
 
 [requires]
 python_version = "3.8"
