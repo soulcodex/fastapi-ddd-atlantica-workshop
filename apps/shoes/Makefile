@@ -42,8 +42,8 @@ remove-dep: ## Remove a specific dependency using pipenv environment deps file.
 
 .PHONY: unit-test
 unit-test:
-	pipenv run pytest --no-header -v ../../tests/shoes/application
+	pipenv run pytest --no-header -v ../../shoes/application/
 
 .PHONY: acceptance-test
 acceptance-test:
-	pipenv run pytest --no-header -v ../../tests/shoes/infrastructure/acceptance
+	pipenv run pytest --no-header -v ../../tests/shoes/

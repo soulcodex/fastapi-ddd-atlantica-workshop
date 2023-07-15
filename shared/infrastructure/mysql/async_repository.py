@@ -29,5 +29,5 @@ class MysqlAsyncRepository(ABC):
                 await tx()
                 await cursor.execute('COMMIT;')
         except aiomysql.Error:
-            self._logger.warning('Transaction failure... [ROLLBACK]')
             await cursor.execute('ROLLBACK;')
+            self._logger.warning('Transaction failure... [ROLLBACK]')

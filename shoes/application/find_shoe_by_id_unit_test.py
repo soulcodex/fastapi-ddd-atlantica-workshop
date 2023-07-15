@@ -1,6 +1,6 @@
 from unittest.mock import patch, AsyncMock
 from unittest import IsolatedAsyncioTestCase
-from tests.shoes.domain.shoe import ShoeObjectMother
+from shoes.infrastructure.pytest.factory import ShoeObjectMother
 
 from shoes.domain.errors import ShoeNotExist
 from shoes.domain.shoe import ShoesRepository

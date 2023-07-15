@@ -53,7 +53,7 @@ class ShoeObjectMother:
             updated_at=shoe.updated_at.value
         )
 
-    def not_available(self) -> Shoe:
+    def with_availability(self, available: bool = True) -> Shoe:
         shoe = self.random_shoe()
         return Shoe.from_primitives(
             id=shoe.id.value,
@@ -61,7 +61,7 @@ class ShoeObjectMother:
             color=shoe.color.value,
             size=shoe.size.value,
             price=shoe.price.raw_value,
-            available=False,
+            available=available,
             created_at=shoe.created_at.value,
             updated_at=shoe.updated_at.value
         )

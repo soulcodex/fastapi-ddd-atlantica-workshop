@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from shared.domain.bus.dto import Dto
-from shoes.domain.shoe import ShoesRepository
 from shoes.domain.value_object import ShoeId
+from shoes.domain.shoe import ShoesRepository
 from shared.domain.bus.query_bus import QueryHandler
 from shoes.application.shoe_response import ShoeResponse
 
@@ -12,7 +12,7 @@ class FindShoeByIdQuery(Dto):
 
     @staticmethod
     def id() -> str:
-        return "search_shoes_list_query"
+        return "find_shoe_by_id_query"
 
 
 class FindShoeByIdQueryHandler(QueryHandler):

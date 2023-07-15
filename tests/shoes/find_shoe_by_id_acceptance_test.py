@@ -4,19 +4,18 @@ from fastapi import FastAPI
 from httpx import AsyncClient
 from typing import AsyncIterator
 from shoes.domain.shoe import ShoesRepository, Shoe
+from shoes.infrastructure.pytest.fixtures import shoes_factory
 from shared.domain.types.identifier_provider import UlidProvider
-from tests.support.pytest.identifer_fixtures import ulid_generator
-from tests.shoes.infrastructure.pytest.shoe_pytest_factory import shoes_object_mother
-from tests.support.pytest.fastapi_fixtures import fastapi_application as application, di_container
+from shared.infrastructure.pytest.fixtures import ulid_generator
+from shoes.infrastructure.pytest.fixtures import application, shoes_repository
 
 
 class TestFindShoeByIdAcceptance:
 
     @pytest.fixture
-    async def shoe_factory(self, di_container, shoes_object_mother) -> AsyncIterator[Shoe]:
-        repo = await di_container.aget_instance(ShoesRepository)
-        shoe = shoes_object_mother.random_shoe()
-        await repo.save(shoe)
+    async def shoe_factory(self, shoes_repository, shoes_factory) -> AsyncIterator[Shoe]:
+        shoe = shoes_factory.random_shoe()
+        await shoes_repository.save(shoe)
         yield shoe
 
     async def test_find_one_shoe_by_id_success(self, application: FastAPI, shoe_factory) -> None:

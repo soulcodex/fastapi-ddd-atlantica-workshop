@@ -55,9 +55,9 @@ class Shoe(AggregateRoot):
 class ShoesRepository(ABC):
 
     @abstractmethod
-    def find(self, shoe_id: ShoeId) -> 'Shoe':
+    async def find(self, shoe_id: ShoeId) -> 'Shoe':
         pass
 
     @abstractmethod
-    def save(self, shoe: 'Shoe') -> None:
+    async def save(self, shoe: 'Shoe') -> None:
         pass

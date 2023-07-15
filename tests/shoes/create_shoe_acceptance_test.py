@@ -8,10 +8,10 @@ from typing import Dict, Text, Any, Callable, Coroutine
 from shoes.domain.shoe import Shoe
 from shared.domain.types.identifier_provider import UlidProvider
 
-from tests.shoes.domain.shoe import ShoeObjectMother
-from tests.support.pytest.identifer_fixtures import ulid_generator
-from tests.shoes.infrastructure.pytest.shoe_pytest_factory import shoes_object_mother
-from tests.support.pytest.fastapi_fixtures import fastapi_application as application, di_container
+from shoes.infrastructure.pytest.fixtures import shoes_factory
+from shoes.infrastructure.pytest.factory import ShoeObjectMother
+from shared.infrastructure.pytest.fixtures import ulid_generator
+from shoes.infrastructure.pytest.fixtures import application, di_container
 
 
 class TestCreateShoeAcceptance:
@@ -36,11 +36,11 @@ class TestCreateShoeAcceptance:
     async def test_create_one_shoe_fails_because_route_doesnt_exists(
             self,
             application: FastAPI,
-            shoes_object_mother: ShoeObjectMother,
+            shoes_factory: ShoeObjectMother,
             shoe_json_factory
     ) -> None:
         async with AsyncClient(app=application, base_url='http://testserver') as client:
-            random_shoe = shoes_object_mother.random_shoe()
+            random_shoe = shoes_factory.random_shoe()
             shoe_json = await shoe_json_factory(random_shoe)
             response = await client.put(url='/v1/shoes', json=shoe_json)
             assert response.status_code == 405
@@ -49,11 +49,11 @@ class TestCreateShoeAcceptance:
     async def test_create_one_random_shoe_successfully(
             self,
             application: FastAPI,
-            shoes_object_mother: ShoeObjectMother,
+            shoes_factory: ShoeObjectMother,
             shoe_json_factory
     ) -> None:
         async with AsyncClient(app=application, base_url='http://testserver') as client:
-            random_shoe = shoes_object_mother.random_shoe()
+            random_shoe = shoes_factory.random_shoe()
             shoe_json = await shoe_json_factory(random_shoe)
             response = await client.post(url='/v1/shoes', json=shoe_json)
             assert response.status_code == 204
@@ -61,11 +61,11 @@ class TestCreateShoeAcceptance:
     async def test_create_one_shoe_fails_because_shoe_size_is_out_of_range(
             self,
             application: FastAPI,
-            shoes_object_mother: ShoeObjectMother,
+            shoes_factory: ShoeObjectMother,
             shoe_json_factory
     ) -> None:
         async with AsyncClient(app=application, base_url='http://testserver') as client:
-            random_shoe = shoes_object_mother.random_shoe()
+            random_shoe = shoes_factory.random_shoe()
             shoe_json = await shoe_json_factory(random_shoe)
             shoe_json.update({'size': 46})
             response = await client.post(url='/v1/shoes', json=shoe_json)
@@ -86,11 +86,11 @@ class TestCreateShoeAcceptance:
     async def test_create_one_shoe_fails_because_color_is_not_allowed(
             self,
             application: FastAPI,
-            shoes_object_mother: ShoeObjectMother,
+            shoes_factory: ShoeObjectMother,
             shoe_json_factory
     ) -> None:
         async with AsyncClient(app=application, base_url='http://testserver') as client:
-            random_shoe = shoes_object_mother.random_shoe()
+            random_shoe = shoes_factory.random_shoe()
             shoe_json = await shoe_json_factory(random_shoe)
             shoe_json.update({'color': 'pink'})
             response = await client.post(url='/v1/shoes', json=shoe_json)
