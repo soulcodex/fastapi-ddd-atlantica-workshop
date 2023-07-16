@@ -7,21 +7,21 @@ from typing import Any, Dict, Text, Callable, Awaitable, Coroutine, Type
 class CommandHandler(ABC):
 
     @abstractmethod
-    def handle(self, query: Type[Dto]) -> None:
+    async def handle(self, query: Type[Dto]) -> None:
         pass
 
 
 class CommandBus(ABC):
     @abstractmethod
-    def register_command(self, command: Type[Dto], handler: CommandHandler) -> None:
+    async def register_command(self, command: Type[Dto], handler: CommandHandler) -> None:
         pass
 
     @abstractmethod
-    def get_command_handler(self, command: Type[Dto]) -> CommandHandler:
+    async def get_command_handler(self, command: Type[Dto]) -> CommandHandler:
         pass
 
     @abstractmethod
-    def dispatch(self, command: Dto) -> None:
+    async def dispatch(self, command: Dto) -> None:
         pass
 
 

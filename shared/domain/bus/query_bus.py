@@ -7,17 +7,17 @@ from typing import Dict, Any, Text, Awaitable, Coroutine, Callable, Type
 class QueryHandler(ABC):
 
     @abstractmethod
-    def handle(self, query: Dto) -> Any:
+    async def handle(self, query: Dto) -> Any:
         pass
 
 
 class QueryBus(ABC):
     @abstractmethod
-    def register_query(self, query: Type[Dto], handler: QueryHandler) -> None:
+    async def register_query(self, query: Type[Dto], handler: QueryHandler) -> None:
         pass
 
     @abstractmethod
-    def ask(self, query: Dto) -> Any:
+    async def ask(self, query: Dto) -> Any:
         pass
 
 

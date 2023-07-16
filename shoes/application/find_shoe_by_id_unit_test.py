@@ -11,12 +11,12 @@ from shoes.application.find_shoe_by_id import FindShoeByIdQuery, FindShoeByIdQue
 class TestFindShoeByIdQueryHandler(IsolatedAsyncioTestCase):
 
     def setUp(self) -> None:
-        self.shoe_mother = ShoeObjectMother()
+        self.shoe_factory = ShoeObjectMother()
 
     @patch(f'{ShoesRepository.__module__}.{ShoesRepository.__name__}.find')
     async def test_fetch_one_shoe_by_id_successfully(self, repository: AsyncMock) -> None:
         # Given
-        shoe = self.shoe_mother.random_shoe()
+        shoe = self.shoe_factory.random_shoe()
         repository.find.return_value = shoe
 
         # When
@@ -32,7 +32,7 @@ class TestFindShoeByIdQueryHandler(IsolatedAsyncioTestCase):
     async def test_fetch_one_shoe_by_id_fails_due_to_not_exists(self, repository: AsyncMock) -> None:
         with self.assertRaises(ShoeNotExist) as _:
             # Given
-            shoe = self.shoe_mother.random_shoe()
+            shoe = self.shoe_factory.random_shoe()
             repository.find.side_effect = ShoeNotExist.from_shoe_id(shoe.id.value)
 
             # When
