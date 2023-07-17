@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-fastapi = {extras = ["all"], version = "*"}
+fastapi = { extras = ["all"], version = "*" }
 aiomysql = "*"
 pyway = "*"
 aiologger = "*"
@@ -14,6 +14,7 @@ python-ulid = "*"
 pypika = "*"
 
 [dev-packages]
+pytest-asyncio = "*"
 pytest = "*"
 httpx = "*"
 Faker = "*"

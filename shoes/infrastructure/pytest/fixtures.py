@@ -1,30 +1,47 @@
 import pytest
+import pytest_asyncio
 from pyxdi import PyxDI
 from fastapi import FastAPI
 from apps.shoes.main import app
-from typing import AsyncIterator
 from shoes.domain.shoe import ShoesRepository
+from apps.shoes.dependency_injection import di
+from pyxdi.core import RequestContext, ScopedContext
 from shoes.infrastructure.pytest.factory import ShoeObjectMother
+from typing import AsyncIterator, Callable, TypeVar, Type, Coroutine, Any
+
+T = TypeVar('T')
 
 
-@pytest.fixture
-async def application() -> AsyncIterator[FastAPI]:
-    yield app
+@pytest_asyncio.fixture
+async def application() -> FastAPI:
+    return app
 
 
-@pytest.fixture
-async def di_container() -> AsyncIterator[PyxDI]:
+@pytest_asyncio.fixture
+async def di_container() -> Callable[[Type[T]], T]:
     container: PyxDI = app.state.di
-    async with container.arequest_context():
-        yield container
-        await container.aclose()
+
+    # noinspection PyProtectedMember
+    async def _dependency_resolver(dep: Type[T]) -> T:
+        try:
+            return await container.aget_instance(dep)
+        except LookupError:
+            container._request_context_var.set(RequestContext())
+            return await container.aget_instance(dep)
+
+    return _dependency_resolver
 
 
-@pytest.fixture
-async def shoes_factory() -> AsyncIterator[ShoeObjectMother]:
-    yield ShoeObjectMother()
+@pytest_asyncio.fixture
+async def shoes_factory() -> ShoeObjectMother:
+    return ShoeObjectMother()
 
 
-@pytest.fixture
-async def shoes_repository(di_container) -> AsyncIterator[ShoesRepository]:
-    yield await di_container.aget_instance(ShoesRepository)
+@pytest_asyncio.fixture
+async def shoes_repository(di_container) -> ShoesRepository:
+    return di_container(ShoesRepository)
+
+
+@pytest_asyncio.fixture(autouse=True)
+async def before_after(di_container):
+    pass

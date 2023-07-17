@@ -23,10 +23,7 @@ ___
 ## Requirements :bullettrain_side:
 
 * Python >= 3.8
-* pip
-* pipenv
 * docker
-* yq
 * Starving for knowledge (The most important :smile:)
 
 ___

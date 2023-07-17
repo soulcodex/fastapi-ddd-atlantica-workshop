@@ -13,40 +13,46 @@ from shoes.infrastructure.pytest.fixtures import application, shoes_repository
 class TestFindShoeByIdAcceptance:
 
     @pytest.fixture
-    async def shoe_factory(self, shoes_repository, shoes_factory) -> AsyncIterator[Shoe]:
+    async def shoe_factory(self, shoes_repository, shoes_factory) -> Shoe:
         shoe = shoes_factory.random_shoe()
-        await shoes_repository.save(shoe)
-        yield shoe
+        await (await shoes_repository).save(shoe)
+        return shoe
 
+    @pytest.mark.asyncio
     async def test_find_one_shoe_by_id_success(self, application: FastAPI, shoe_factory) -> None:
         async with AsyncClient(app=application, base_url='http://testserver') as client:
-            response = await client.get(f'/v1/shoes/{shoe_factory.id.value}')
+            shoe = await shoe_factory
+            response = await client.get(f'/v1/shoes/{shoe.id.value}')
             assert response.status_code == 200
             assert response.json() == {
-                "id": shoe_factory.id.value,
-                "available": shoe_factory.available.value,
-                "color": shoe_factory.color.value,
-                "name": shoe_factory.name.value,
-                "price": shoe_factory.price.value_with_currency("€"),
-                "size": shoe_factory.size.value
+                "id": shoe.id.value,
+                "available": shoe.available.value,
+                "color": shoe.color.value,
+                "name": shoe.name.value,
+                "price": shoe.price.value_with_currency("€"),
+                "size": shoe.size.value
             }
 
+    @pytest.mark.asyncio
     async def test_find_one_shoe_by_id_fails_because_shoe_doesnt_exists(
             self,
             application: FastAPI,
             ulid_generator: UlidProvider
     ) -> None:
         async with AsyncClient(app=application, base_url='http://testserver') as client:
-            response = await client.get(f'/v1/shoes/{ulid_generator.generate().value}')
+            shoe_id = (await ulid_generator).generate()
+            response = await client.get(f'/v1/shoes/{shoe_id.value}')
             assert response.status_code == 404
             assert response.json() == {"detail": "Shoe not exist."}
 
+    @pytest.mark.asyncio
     async def test_find_one_shoe_by_id_fails_with_wrong_http_method(
             self,
             application: FastAPI,
             ulid_generator: UlidProvider
     ) -> None:
         async with AsyncClient(app=application, base_url='http://testserver') as client:
-            response = await client.delete(f'/v1/shoes/{ulid_generator.generate().value}')
+            shoe_id = (await ulid_generator).generate()
+            response = await client.delete(f'/v1/shoes/{shoe_id.value}')
             assert response.status_code == 405
             assert response.json() == {"detail": "Method Not Allowed"}

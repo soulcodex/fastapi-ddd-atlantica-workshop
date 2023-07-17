@@ -1,5 +1,6 @@
 SHELL := /bin/bash
 DOCKER_COMPOSE := docker compose -f docker-compose.yml
+DOCKER_SHOES_EXEC := docker exec -it shoes-api-atlantica-conf-2023
 
 .PHONY: help
 help:
@@ -10,40 +11,30 @@ setup: ## Make shoes api setup
 	[ -f ./docker-compose.yml ] || cp docker-compose.yml.dist docker-compose.yml
 	[ -f ./.env ] || cp .env.example .env
 	$(DOCKER_COMPOSE) up -d --build --force-recreate
+	$(DOCKER_SHOES_EXEC) bash -l
+
+.PHONY: bash
+bash: ## Run bash terminal inside shoes-api container.
+	$(DOCKER_SHOES_EXEC) bash -l
 
 .PHONY: stop
 stop: ## Stop project docker containers.
 	$(DOCKER_COMPOSE) down --remove-orphans
 
-.PHONY: start
-start: ## Bootstrap and run shoes api
-	$(DOCKER_COMPOSE) up -d --build --force-recreate
-	pipenv install
-	pipenv run pyway migrate
-	pipenv run uvicorn main:app --reload --loop asyncio --reload-include $$PWD/../../apps --reload-include $$PWD/../../shoes --reload-include $$PWD/../../shared
-
 .PHONY: install-dep
 install-dep: ## Install a new dependency using pipenv environment
 	DEP=$(shell bash -c 'read -p "Package name to install: " dep; echo $$dep') && \
-	pipenv install $$DEP
-
+	DEV=$(shell bash -c 'read -p "Is a development stage package? [yes|no] " dev; [$$dev == "yes"] || echo "--dev"') && \
+	$(DOCKER_SHOES_EXEC) pipenv install $$DEP $$DEV
 
 .PHONY: remove-dep
 remove-dep: ## Remove a specific dependency using pipenv environment deps file.
-	PS3="Select the package to uninstall: " && \
-	select pkg in $$(yq '.packages * .dev-packages|keys|join(" ")' -oy -p toml Pipfile); \
-	do \
-	  if [ ! -z $$pkg ]; then \
-	  	pipenv uninstall $$pkg; \
-	  	exit; \
-	  fi; \
-	  echo "Invalid package selected" && exit; \
-  	done
+	$(DOCKER_SHOES_EXEC) /root/tools/remove-dep.sh
 
 .PHONY: unit-test
-unit-test:
-	pipenv run pytest --no-header -v ../../shoes/application/
+unit-test: ## Run shoes unitary tests.
+	$(DOCKER_SHOES_EXEC) pipenv run pytest --no-header -v shoes/application/
 
 .PHONY: acceptance-test
-acceptance-test:
-	pipenv run pytest --no-header -v ../../tests/shoes/
+acceptance-test: ## Run shoes acceptance / E2E tests.
+	$(DOCKER_SHOES_EXEC) pipenv run pytest --no-header -v tests/shoes/
