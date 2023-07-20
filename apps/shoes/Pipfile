@@ -17,7 +17,6 @@ databases = {version = "*", extras = ["aiomysql"]}
 pytest-asyncio = "*"
 pytest = "*"
 httpx = "*"
-Faker = "*"
 
 [requires]
 python_version = "3.8"

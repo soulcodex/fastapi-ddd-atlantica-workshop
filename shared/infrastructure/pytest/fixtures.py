@@ -1,17 +1,10 @@
 import pytest
 import asyncio
 import aiomysql
-from faker import Faker
 from typing import AsyncIterator, Callable
 from shared.domain.types.identifier_provider import UlidProvider, UuidProvider
 from shared.infrastructure.identifier_providers import FixedUlidProvider, FixedUuidProvider
 from shared.infrastructure.pytest.arrangers import PersistenceArranger, MysqlPersistenceArranger
-
-
-@pytest.fixture
-async def faker() -> AsyncIterator[Faker]:
-    faker_instance = Faker(['en-US', 'en_US', 'en_US', 'en-US'])
-    yield faker_instance
 
 
 @pytest.fixture

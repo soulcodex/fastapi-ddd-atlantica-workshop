@@ -1,6 +1,5 @@
 import pytest
 import pytest_asyncio
-from faker import Faker
 from fastapi import FastAPI
 from httpx import AsyncClient
 from typing import Dict, Text, Any, Callable, Coroutine
