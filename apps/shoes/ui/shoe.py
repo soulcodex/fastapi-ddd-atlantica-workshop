@@ -17,7 +17,7 @@ class Shoe(BaseModel):
 
 class CreateShoe(Shoe):
     color: ShoeColor
-    price: int = Field(gt=ShoePrice.min_value())
+    price: int = Field(gt=ShoePrice.min_value(), description='Shoe price represented in cents')
     available: Optional[bool] = Field(default=True, examples=[True, False])
 
 

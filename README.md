@@ -13,7 +13,7 @@ Welcome dear coder to the official repository for the tech talk series called **
 My name is **Roberto García** and I really hope you can enjoy these resources to keep growing in your career path as a
 python programmer specifically developing **REST APIs** using **FastAPI** as a framework.
 
-We are in the second phase and now we should do our first steps together towards a event driven architecture, apply our
+We are in the second phase called **"Domain Driven Design on FastAPI"**, now we should do our first steps together towards a event driven architecture, apply our
 previous knowledge about all the good things that **FastAPI** provide us out-of-box, take the steering wheel of our
 business logic in our projects and build resilient and agnostic code despite the libraries or specific technologies of
 persistence, messaging, cache, identifiers, time and so on.
@@ -35,6 +35,7 @@ ___
 ├── apps
 │   └── shoes
 │       ├── dependency_injection
+│       ├── docker
 │       ├── migrations
 │       ├── routes
 │       └── ui
@@ -115,5 +116,5 @@ ___
 git clone https://github.com/soulcodex/fastapi-ddd-atlantica-workshop.git shoes-store-api
 cd shoes-store-api
 make shoes-api
-make shoes-api-run
+make shoes-api-bash
 ```
