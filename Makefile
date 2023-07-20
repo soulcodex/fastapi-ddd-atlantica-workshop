@@ -10,7 +10,7 @@ help:
 .PHONY: shoes-api
 shoes-api: ## Setup shoes api dependencies.
 	@make __init
-	cd $$SHOES_API_ROOT && make setup
+	cd $$SHOES_API_ROOT && make start
 
 .PHONY: shoes-api-bash
 shoes-api-bash: ## Open a new bash terminal inside shoes-api container.

@@ -3,13 +3,15 @@ version: "3.1"
 services:
   shoes_api:
     container_name: 'shoes-api-atlantica-conf-2023'
+    platform: 'linux/amd64'
     build:
       context: .
       dockerfile: ./docker/shoes-api/Dockerfile
     environment:
       - PIPENV_PIPFILE=/app/apps/shoes/Pipfile
     volumes:
-      - ./:/app/apps/shoes/
+      - .:/app/apps/shoes/
+      - ../../Makefile:/app/Makefile
       - ../../shared/:/app/shared/
       - ../../shoes/:/app/shoes/
       - ../../tests/:/app/tests/
@@ -19,6 +21,7 @@ services:
       - mysql
   mysql:
     image: mysql:8.0.33
+    platform: 'linux/amd64'
     container_name: shoes-api-mysql-atlantica-conf-2023
     command: mysqld --sql_mode="NO_ENGINE_SUBSTITUTION"
     volumes:

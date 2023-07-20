@@ -6,8 +6,8 @@ DOCKER_SHOES_EXEC := docker exec -it shoes-api-atlantica-conf-2023
 help:
 	@cat $(MAKEFILE_LIST) | grep -e "^[a-zA-Z_\-]*: *.*## *" | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-.PHONY: setup
-setup: ## Make shoes api setup
+.PHONY: start
+start: ## Make shoes api setup and start all shoes-api docker containers.
 	[ -f ./docker-compose.yml ] || cp docker-compose.yml.dist docker-compose.yml
 	[ -f ./.env ] || cp .env.example .env
 	$(DOCKER_COMPOSE) up -d --build --force-recreate
