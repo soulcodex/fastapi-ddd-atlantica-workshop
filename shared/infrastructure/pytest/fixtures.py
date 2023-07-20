@@ -1,9 +1,9 @@
 import pytest
 import asyncio
+import aiomysql
 from faker import Faker
 from typing import AsyncIterator, Callable
 from shared.domain.types.identifier_provider import UlidProvider, UuidProvider
-from shared.infrastructure.mysql.async_connection_pool import AsyncConnectionPool
 from shared.infrastructure.identifier_providers import FixedUlidProvider, FixedUuidProvider
 from shared.infrastructure.pytest.arrangers import PersistenceArranger, MysqlPersistenceArranger
 
@@ -25,8 +25,8 @@ async def uuid_generator() -> UuidProvider:
 
 
 @pytest.fixture
-async def mysql_arranger() -> Callable[[AsyncConnectionPool], PersistenceArranger]:
-    def _arranger(pool: AsyncConnectionPool) -> MysqlPersistenceArranger:
+async def mysql_arranger() -> Callable[[aiomysql.Pool], PersistenceArranger]:
+    def _arranger(pool: aiomysql.Pool) -> MysqlPersistenceArranger:
         return MysqlPersistenceArranger(pool=pool)
 
     return _arranger

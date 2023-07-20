@@ -11,7 +11,6 @@ setup: ## Make shoes api setup
 	[ -f ./docker-compose.yml ] || cp docker-compose.yml.dist docker-compose.yml
 	[ -f ./.env ] || cp .env.example .env
 	$(DOCKER_COMPOSE) up -d --build --force-recreate
-	$(DOCKER_SHOES_EXEC) bash -l
 
 .PHONY: bash
 bash: ## Run bash terminal inside shoes-api container.
@@ -24,7 +23,7 @@ stop: ## Stop project docker containers.
 .PHONY: install-dep
 install-dep: ## Install a new dependency using pipenv environment
 	DEP=$(shell bash -c 'read -p "Package name to install: " dep; echo $$dep') && \
-	DEV=$(shell bash -c 'read -p "Is a development stage package? [yes|no] " dev; [$$dev == "yes"] || echo "--dev"') && \
+	DEV=$(shell bash -c 'read -p "Is a development stage package? [yes|no] " dev; [$$dev != "yes"] || echo "--dev"') && \
 	$(DOCKER_SHOES_EXEC) pipenv install $$DEP $$DEV
 
 .PHONY: remove-dep

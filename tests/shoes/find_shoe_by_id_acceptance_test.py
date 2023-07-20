@@ -1,5 +1,4 @@
 import pytest
-from pyxdi import PyxDI
 from fastapi import FastAPI
 from httpx import AsyncClient
 from typing import AsyncIterator
@@ -15,7 +14,7 @@ class TestFindShoeByIdAcceptance:
     @pytest.fixture
     async def shoe_factory(self, shoes_repository, shoes_factory) -> Shoe:
         shoe = shoes_factory.random_shoe()
-        await (await shoes_repository).save(shoe)
+        await shoes_repository.save(shoe)
         return shoe
 
     @pytest.mark.asyncio

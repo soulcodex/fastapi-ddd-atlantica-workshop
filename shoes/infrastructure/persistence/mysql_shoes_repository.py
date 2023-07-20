@@ -1,6 +1,7 @@
 import aiomysql
 from pypika import MySQLQuery, Table
-from typing import Any, Optional, Dict, Text, List
+from databases.interfaces import Record
+from typing import Any, Optional, Dict, Text, List, Mapping
 
 from shoes.domain.value_object import ShoeId
 from shoes.domain.errors import ShoeNotExist
@@ -8,6 +9,7 @@ from shoes.domain.shoe import ShoesRepository, Shoe
 from shared.infrastructure.mysql.async_repository import MysqlAsyncRepository
 
 
+# noinspection PyProtectedMember
 class MysqlShoesRepository(ShoesRepository, MysqlAsyncRepository):
     __fields = [
         "id",
@@ -33,29 +35,31 @@ class MysqlShoesRepository(ShoesRepository, MysqlAsyncRepository):
         ]
 
     async def find(self, shoe_id: ShoeId) -> Shoe:
-        async with self._connection.reader.cursor() as cursor:
+        async with self._pool.connection() as connection:
             builder = await self.query_builder()
             query = builder \
                 .select(*self.__fields) \
                 .where(builder.id == shoe_id.value) \
                 .get_sql()
-            await cursor.execute(query)
-            item: Optional[Dict[Text, Any]] = await cursor.fetchone()
 
-            if item is None:
+            row: Optional[Record] = await connection.fetch_one(query=query)
+
+            print(row)
+            if row is None:
                 raise ShoeNotExist.from_shoe_id(shoe_id=shoe_id.value)
 
-            item.update({'size': int(item.get('size'))})
-            return Shoe.from_primitives(**item)
+            # noinspection PyProtectedMember
+            item: Mapping = row._mapping
+            return Shoe.from_primitives(**{**item, 'size': int(item.get('size'))})
 
     async def save(self, shoe: 'Shoe') -> None:
-        async with self._connection.writer.cursor() as cursor:
+        async with self._pool.connection() as connection:
             builder = await self.query_builder()
             fields = await self.fields_list(shoe)
             query = builder.insert(*fields).get_sql()
 
             async def tx() -> None:
-                await cursor.execute(query)
+                await connection.execute(query)
 
             try:
                 await self._transaction(tx)

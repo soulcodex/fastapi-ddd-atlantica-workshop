@@ -5,13 +5,13 @@ name = "pypi"
 
 [packages]
 fastapi = { extras = ["all"], version = "*" }
-aiomysql = "*"
 pyway = "*"
 aiologger = "*"
 pyxdi = "*"
 anyio = "*"
 python-ulid = "*"
 pypika = "*"
+databases = {version = "*", extras = ["aiomysql"]}
 
 [dev-packages]
 pytest-asyncio = "*"

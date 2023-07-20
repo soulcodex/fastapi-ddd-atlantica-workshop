@@ -1,6 +1,5 @@
 import pytest
 import pytest_asyncio
-from pyxdi import PyxDI
 from faker import Faker
 from fastapi import FastAPI
 from httpx import AsyncClient

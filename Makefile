@@ -12,6 +12,11 @@ shoes-api: ## Setup shoes api dependencies.
 	@make __init
 	cd $$SHOES_API_ROOT && make setup
 
+.PHONY: shoes-api-bash
+shoes-api-bash: ## Open a new bash terminal inside shoes-api container.
+	@make __init
+	cd $$SHOES_API_ROOT && make bash
+
 .PHONY: shoes-api-docker-stop
 shoes-api-docker-stop: ## Down docker containers related with the shoes service.
 	@make __init
