@@ -1,6 +1,5 @@
 import aiomysql
 import databases
-import pyxdi
 from fastapi import Depends
 from aiologger import Logger
 from typing_extensions import Annotated

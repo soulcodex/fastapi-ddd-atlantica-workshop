@@ -7,7 +7,6 @@ name = "pypi"
 fastapi = { extras = ["all"], version = "*" }
 pyway = "*"
 aiologger = "*"
-pyxdi = "*"
 anyio = "*"
 python-ulid = "*"
 pypika = "*"
