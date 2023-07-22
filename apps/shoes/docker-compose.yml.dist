@@ -22,7 +22,7 @@ services:
   mysql:
     image: mysql:8.0.33
     platform: 'linux/amd64'
-    container_name: shoes-api-mysql-atlantica-conf-2023
+    container_name: 'shoes-api-mysql-atlantica-conf-2023'
     command: mysqld --sql_mode="NO_ENGINE_SUBSTITUTION"
     volumes:
       - mysql-data:/var/lib/mysql
@@ -33,5 +33,18 @@ services:
       - MYSQL_PASSWORD=can_do_all
     ports:
       - "3301:3306"
+  message_broker:
+    image: 'rabbitmq:3.12.2-management'
+    platform: 'linux/amd64'
+    container_name: 'shoes-api-rabbitmq-atlantica-conf-2023'
+    ports:
+      - "5630:5672"
+      - "8090:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=atlantica
+      - RABBITMQ_DEFAULT_PASS=atlantica
+    volumes:
+      - ./docker/message_broker/rabbitmq.conf:/etc/rabbitmq/rabbitmq.config:ro
+      - ./docker/message_broker/definitions.json:/etc/rabbitmq/definitions.json:ro
 volumes:
   mysql-data:

@@ -24,6 +24,10 @@ class DomainEvent(ABC):
         for key, content in metadata.items():
             self.metadata[key] = content
 
+    @abstractmethod
+    def event_name(self) -> Text:
+        pass
+
 
 class ConsumableDomainEvent:
 
@@ -33,5 +37,19 @@ class ConsumableDomainEvent:
 
     @classmethod
     @abstractmethod
-    def from_raw(cls, payload: Dict[Text, Any]) -> 'ConsumableDomainEvent':
+    async def from_raw(cls, payload: Dict[Text, Any]) -> 'ConsumableDomainEvent':
+        pass
+
+
+class DomainEventSerializer(ABC):
+
+    @abstractmethod
+    async def serialize(self, event: DomainEvent) -> Text:
+        pass
+
+
+class DomainEventPublisher(ABC):
+
+    @abstractmethod
+    async def publish(self, event: DomainEvent) -> None:
         pass

@@ -1,0 +1,27 @@
+{
+  "users": [
+    {
+      "name": "atlantica",
+      "password_hash": "JYSLIsIlqciVSAcpL/IS+vAJhNwpjtIzD+YRCQwrR7DEozPS",
+      "tags": "administrator"
+    }
+  ],
+  "vhosts": [
+    {
+      "name": "/"
+    }
+  ],
+  "exchanges": [
+    {
+      "name": "atlantica_conf_2023_domain_events",
+      "vhost": "/",
+      "type": "topic",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    }
+  ],
+  "queues": [],
+  "bindings": []
+}

@@ -1,4 +1,5 @@
 from datetime import datetime, timezone
+from shared.domain.utils import datetime_to_milliseconds
 
 
 class Timestamp:
@@ -15,8 +16,8 @@ class Timestamp:
         return self.__value.timestamp()
 
     @property
-    def millis(self) -> float:
-        return self.__value.replace(tzinfo=timezone.utc).timestamp() * 1000
+    def millis(self) -> int:
+        return datetime_to_milliseconds(self.__value)
 
     def __eq__(self, other: 'Timestamp'):
         return self.value == other.value

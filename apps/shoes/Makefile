@@ -22,9 +22,7 @@ stop: ## Stop project docker containers.
 
 .PHONY: install-dep
 install-dep: ## Install a new dependency using pipenv environment
-	DEP=$(shell bash -c 'read -p "Package name to install: " dep; echo $$dep') && \
-	DEV=$(shell bash -c 'read -p "Is a development stage package? [yes|no] " dev; [$$dev != "yes"] || echo "--dev"') && \
-	$(DOCKER_SHOES_EXEC) pipenv install $$DEP $$DEV
+	$(DOCKER_SHOES_EXEC) /root/tools/add-dep.sh
 
 .PHONY: remove-dep
 remove-dep: ## Remove a specific dependency using pipenv environment deps file.

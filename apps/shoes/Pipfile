@@ -11,6 +11,7 @@ anyio = "*"
 python-ulid = "*"
 pypika = "*"
 databases = {version = "*", extras = ["aiomysql"]}
+aio-pika = "*"
 
 [dev-packages]
 pytest-asyncio = "*"
