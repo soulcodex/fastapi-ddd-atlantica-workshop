@@ -48,9 +48,10 @@ async def configure_mysql_connection_pool(
 
 
 async def configure_database_arranger(
-        pool: Annotated[aiomysql.Pool, Depends(configure_mysql_connection_pool)]
+        pool: Annotated[databases.Database, Depends(configure_mysql_connection_pool)],
+        env: Annotated[environment.EnvironmentHandler, Depends(configure_environment_handler)]
 ) -> arrangers.PersistenceArranger:
-    return arrangers.MysqlPersistenceArranger(pool=pool)
+    return arrangers.MysqlPersistenceArranger(pool=pool, database=env.get_value('MYSQL_DATABASE'))
 
 
 async def configure_uuid_provider() -> identifier_provider.UuidProvider:

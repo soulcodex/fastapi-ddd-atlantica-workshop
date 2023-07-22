@@ -7,17 +7,13 @@ from typing import Any, Dict, Text, Callable, Awaitable, Coroutine, Type
 class CommandHandler(ABC):
 
     @abstractmethod
-    async def handle(self, query: Type[Dto]) -> None:
+    async def handle(self, query: Dto) -> None:
         pass
 
 
 class CommandBus(ABC):
     @abstractmethod
     async def register_command(self, command: Type[Dto], handler: CommandHandler) -> None:
-        pass
-
-    @abstractmethod
-    async def get_command_handler(self, command: Type[Dto]) -> CommandHandler:
         pass
 
     @abstractmethod
@@ -39,13 +35,9 @@ class AwaitableCommandBus(CommandBus):
 
         self.handlers[command_name] = handler
 
-    async def get_command_handler(self, command: Type[Dto]) -> CommandHandler:
+    async def dispatch(self, command: Dto) -> None:
         command_name = command.id()
         if command_name in self.handlers:
-            return self.handlers[command_name]
+            return await self.handlers[command_name].handle(command)
 
         raise Exception('Command not registered', command_name)
-
-    async def dispatch(self, command: Type[Dto]) -> None:
-        handler = await self.get_command_handler(command)
-        await handler.handle(command)

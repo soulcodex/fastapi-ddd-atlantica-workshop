@@ -18,11 +18,8 @@ class MysqlAsyncRepository(ABC):
     async def query_builder(self) -> Table:
         return MySQLQuery.Table(self.table_name)
 
-    async def _connection(self) -> databases.core.Connection:
-        pass
-
     @abstractmethod
-    async def fields_list(self, aggregate: AggregateRoot) -> List[Any]:
+    async def fields_values_list(self, aggregate: AggregateRoot) -> List[Any]:
         pass
 
     async def _transaction(self, tx: Callable[..., Coroutine[Any, Any, Any]]) -> None:

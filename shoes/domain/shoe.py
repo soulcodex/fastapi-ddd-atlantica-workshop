@@ -31,9 +31,9 @@ class Shoe(AggregateRoot):
     @classmethod
     def from_primitives(
             cls,
-            id: str,
-            name: str,
-            color: str,
+            id: Text,
+            name: Text,
+            color: Text,
             size: int,
             price: int,
             available: bool,

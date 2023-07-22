@@ -63,6 +63,7 @@ ___
 * Defines dependency injection graph and bootstrap it all of them.
 * Framework entrypoints and all the most external things which needs pieces which comes from the framework (routers,
   middlewares, pydantic models, etc...)
+* Docker :whale: things (development or deployment things)
 * Database migration files for each bounded context.
 
 ### shoes == module == bounded context :open_file_folder: :shoe:
@@ -109,12 +110,29 @@ ___
 * Acceptance tests (HTTP calls, E2E, validate input and output with all the actors)
     * Typology of test in charge to validate how our components works together validating if the code / app do the
       expected behavior or not.
-
+___
 ## Getting started :checkered_flag:
 
 ```bash
+# Clone the repository
 git clone https://github.com/soulcodex/fastapi-ddd-atlantica-workshop.git shoes-store-api
+
+# Setup the repository
 cd shoes-store-api
 make shoes-api
 make shoes-api-bash
+```
+
+## Available commands :running: :fire:
+
+* Run the `make help` command to get a list of all available commands
+
+```text
+shoes-api                      Setup shoes api dependencies.
+shoes-api-bash                 Open a new bash terminal inside shoes-api container.
+shoes-api-docker-stop          Down docker containers related with the shoes service.
+shoes-api-package-add          Add package to our shoes api deps.
+shoes-api-package-remove       Remove package from our shoes api deps.
+shoes-api-unit-test            Run unitary tests suite for shoes application.
+shoes-api-acceptance-test      Run acceptance tests suite for shoes application.
 ```

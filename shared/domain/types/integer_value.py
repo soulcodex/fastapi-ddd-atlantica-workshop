@@ -30,7 +30,7 @@ class RangeValue:
         on_error = self.on_error()
         if on_error is not None:
             raise on_error
-        raise Exception({'message': 'Invalid value for range', 'value': self.value})
+        raise Exception('Invalid value for range', self.value)
 
     def __eq__(self, other: 'RangeValue'):
         return self.value == other.value
@@ -66,8 +66,17 @@ class IntegerValue:
     def guard(self) -> None:
         pass
 
-    def __eq__(self, other: 'IntegerValue'):
+    def __eq__(self, other: 'IntegerValue') -> bool:
         return self.value == other.value
+
+    def __add__(self, other: 'IntegerValue') -> int:
+        return self.value + other.value
+
+    def __sub__(self, other: 'IntegerValue') -> int:
+        return self.value - other.value
+
+    def __mul__(self, other: 'IntegerValue') -> int:
+        return self.value * other.value
 
 
 class OptionalIntegerValue:
@@ -85,6 +94,24 @@ class OptionalIntegerValue:
 
     def __eq__(self, other: 'OptionalIntegerValue'):
         return self.value == other.value
+
+    def __add__(self, other: 'OptionalIntegerValue') -> Optional[int]:
+        if self.value is not None and other.value is not None:
+            return self.value + other.value
+
+        return None
+
+    def __sub__(self, other: 'OptionalIntegerValue') -> Optional[int]:
+        if self.value is not None and other.value is not None:
+            return self.value - other.value
+
+        return None
+
+    def __mul__(self, other: 'OptionalIntegerValue') -> Optional[int]:
+        if self.value is not None and other.value is not None:
+            return self.value * other.value
+
+        return None
 
 
 class PriceValue(IntegerValue):

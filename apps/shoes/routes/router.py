@@ -1,10 +1,9 @@
-from typing import Union
 from starlette import status
 from dataclasses import asdict
 from typing_extensions import Annotated
+from apps.shoes.ui.shoe import Shoe, CreateShoe
 from apps.shoes.dependency_injection import shoes
-from fastapi import APIRouter, HTTPException, Request, Depends
-from apps.shoes.ui.shoe import Shoe, ShoeCollection, CreateShoe
+from fastapi import APIRouter, HTTPException, Depends
 
 from shoes.domain.types import ShoesQueryBus
 from shoes.domain.errors import ShoeNotExist, InvalidShoeSize

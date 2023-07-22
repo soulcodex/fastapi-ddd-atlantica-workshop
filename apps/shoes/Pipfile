@@ -16,6 +16,7 @@ databases = {version = "*", extras = ["aiomysql"]}
 pytest-asyncio = "*"
 pytest = "*"
 httpx = "*"
+asgi-lifespan = "*"
 
 [requires]
 python_version = "3.8"

@@ -1,19 +1,32 @@
 import pytest
-import asyncio
 import aiomysql
 import databases
 import pytest_asyncio
 from fastapi import FastAPI
-from apps.shoes.main import app
+from apps.shoes.main import create_app
+from asgi_lifespan import LifespanManager
+from contextlib import asynccontextmanager
 from shoes.domain.shoe import ShoesRepository
 from apps.shoes.dependency_injection import common, shoes
 from shoes.infrastructure.pytest.factory import ShoeObjectMother
+from shared.domain.types import time_provider, identifier_provider
+from shared.infrastructure import time_providers, identifier_providers
 from shared.infrastructure.pytest.arrangers import PersistenceArranger, MysqlPersistenceArranger
 
 
 @pytest_asyncio.fixture
 async def application() -> FastAPI:
-    return app
+    @asynccontextmanager
+    async def lifespan(_):
+        yield
+
+    app = create_app(lifespan=lifespan)
+    app.dependency_overrides[common.configure_ulid_provider] = lambda _: identifier_providers.FixedUlidProvider()
+    app.dependency_overrides[common.configure_uuid_provider] = lambda _: identifier_providers.FixedUuidProvider()
+    app.dependency_overrides[common.configure_time_provider] = lambda _: time_providers.FixedTimeProvider()
+
+    async with LifespanManager(app) as manager:
+        yield manager.app
 
 
 @pytest_asyncio.fixture
@@ -24,8 +37,7 @@ async def shoes_factory() -> ShoeObjectMother:
 @pytest_asyncio.fixture
 async def database_pool() -> databases.Database:
     env = await common.configure_environment_handler()
-    pool = await common.configure_mysql_connection_pool(env=env)
-    return pool
+    return await common.configure_mysql_connection_pool(env=env)
 
 
 @pytest_asyncio.fixture

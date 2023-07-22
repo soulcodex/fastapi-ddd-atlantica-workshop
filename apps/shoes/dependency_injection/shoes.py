@@ -20,7 +20,7 @@ async def shoes_repository(
         pool: Annotated[databases.Database, Depends(configure_mysql_connection_pool)],
         logger: Annotated[Logger, Depends(configure_logger)]
 ) -> ShoesRepository:
-    return MysqlShoesRepository('shoes', pool, logger)
+    return MysqlShoesRepository(table_name='shoes', pool=pool, logger=logger)
 
 
 async def shoes_query_bus(

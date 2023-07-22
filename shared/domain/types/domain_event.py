@@ -25,12 +25,13 @@ class DomainEvent(ABC):
             self.metadata[key] = content
 
 
-class ConsumableDomainEvent(DomainEvent):
+class ConsumableDomainEvent:
 
     @abstractmethod
     def aggregate_id(self) -> Uuid:
         pass
 
+    @classmethod
     @abstractmethod
-    def from_raw(self, payload: Dict[Text, Any]) -> 'DomainEventConsumable':
+    def from_raw(cls, payload: Dict[Text, Any]) -> 'ConsumableDomainEvent':
         pass

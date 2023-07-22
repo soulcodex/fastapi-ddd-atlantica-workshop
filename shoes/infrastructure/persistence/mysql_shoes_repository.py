@@ -1,7 +1,6 @@
 import aiomysql
-from pypika import MySQLQuery, Table
 from databases.interfaces import Record
-from typing import Any, Optional, Dict, Text, List, Mapping
+from typing import Any, Optional, List, Mapping
 
 from shoes.domain.value_object import ShoeId
 from shoes.domain.errors import ShoeNotExist
@@ -9,7 +8,6 @@ from shoes.domain.shoe import ShoesRepository, Shoe
 from shared.infrastructure.mysql.async_repository import MysqlAsyncRepository
 
 
-# noinspection PyProtectedMember
 class MysqlShoesRepository(ShoesRepository, MysqlAsyncRepository):
     __fields = [
         "id",
@@ -22,7 +20,7 @@ class MysqlShoesRepository(ShoesRepository, MysqlAsyncRepository):
         "updated_at"
     ]
 
-    async def fields_list(self, shoe: Shoe) -> List[Any]:
+    async def fields_values_list(self, shoe: Shoe) -> List[Any]:
         return [
             shoe.id.value,
             shoe.name.value,
@@ -44,7 +42,6 @@ class MysqlShoesRepository(ShoesRepository, MysqlAsyncRepository):
 
             row: Optional[Record] = await connection.fetch_one(query=query)
 
-            print(row)
             if row is None:
                 raise ShoeNotExist.from_shoe_id(shoe_id=shoe_id.value)
 
@@ -55,7 +52,7 @@ class MysqlShoesRepository(ShoesRepository, MysqlAsyncRepository):
     async def save(self, shoe: 'Shoe') -> None:
         async with self._pool.connection() as connection:
             builder = await self.query_builder()
-            fields = await self.fields_list(shoe)
+            fields = await self.fields_values_list(shoe)
             query = builder.insert(*fields).get_sql()
 
             async def tx() -> None:

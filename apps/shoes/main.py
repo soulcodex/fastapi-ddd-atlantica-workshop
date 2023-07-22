@@ -1,30 +1,29 @@
-import databases
-from fastapi import FastAPI, Depends
-from fastapi.dependencies.utils import get_flat_dependant
-from typing_extensions import Annotated
-from starlette.middleware import Middleware
-from typing import cast, Callable, AsyncIterator
-from shared.domain.bus.query_bus import QueryBus
-from apps.shoes.routes.router import shoes_router
-from apps.shoes.dependency_injection.common import configure_mysql_connection_pool as database_pool
-
-app = FastAPI(
-    version='1.0.0',
-    title='Shoes API',
-    description='Shoes API Documentation - AtlanticaConf 2023',
-    docs_url=None,
-    redoc_url='/docs',
-)
+from fastapi import FastAPI
+from typing import Optional
+from starlette.types import Lifespan
+from fastapi.applications import AppType
 
 
-@app.on_event('startup')
-async def startup():
-    pass
+def create_app(lifespan: Optional[Lifespan[AppType]] = None) -> FastAPI:
+    app = FastAPI(
+        version='1.0.0',
+        title='Shoes API',
+        description='Shoes API Documentation - AtlanticaConf 2023',
+        docs_url=None,
+        redoc_url='/docs',
+        lifespan=lifespan
+    )
 
+    @app.on_event('startup')
+    async def startup():
+        pass
 
-@app.on_event('shutdown')
-async def shutdown():
-    pass
+    @app.on_event('shutdown')
+    async def shutdown():
+        pass
 
+    from apps.shoes.routes.router import shoes_router
 
-app.include_router(prefix='/v1/shoes', router=shoes_router)
+    app.include_router(prefix='/v1/shoes', router=shoes_router)
+
+    return app

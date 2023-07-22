@@ -1,6 +1,11 @@
 import pytest
 import asyncio
 
+pytest_plugins = [
+    'shared.infrastructure.pytest.fixtures',
+    'shoes.infrastructure.pytest.fixtures',
+]
+
 
 @pytest.fixture(scope='session')
 def event_loop():
