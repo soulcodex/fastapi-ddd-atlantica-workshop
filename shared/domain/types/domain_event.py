@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime
 from abc import ABC, abstractmethod
 from typing import Text, Dict, Any, Optional, Union
@@ -5,16 +6,15 @@ from shared.domain.types.identifier_provider import Uuid, Ulid
 
 
 class DomainEvent(ABC):
-
     def __init__(
             self,
-            _id: Uuid,
             aggregate_id: Union[Uuid, Ulid],
             payload: Dict[Text, Any],
+            _id: Optional[Uuid] = None,
             occurred_on: Optional[datetime] = None,
             metadata: Optional[Dict[Text, Any]] = None,
     ):
-        self.id = _id
+        self.id = Uuid(uuid.uuid4().__str__()) if _id is None else _id
         self.aggregate_id = aggregate_id
         self.payload = payload
         self.occurred_on = occurred_on if occurred_on is not None else datetime.now()
@@ -27,6 +27,9 @@ class DomainEvent(ABC):
     @abstractmethod
     def event_name(self) -> Text:
         pass
+
+    def __repr__(self) -> Text:
+        return f'<{self.__class__.__name__} {self.id.value}> ({self.payload}) ({self.metadata})'
 
 
 class ConsumableDomainEvent:

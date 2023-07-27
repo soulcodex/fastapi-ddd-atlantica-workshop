@@ -1,6 +1,7 @@
 from typing import Text
 from datetime import datetime
 from abc import ABC, abstractmethod
+from shoes.domain.events import ShoeCreated
 from shared.domain.types.aggregate_root import AggregateRoot
 from shared.domain.types.datetime_value import CreatedAt, UpdatedAt
 from shoes.domain.value_object import ShoeId, ShoeName, ShoeSize, ShoeColor, ShoePrice, ShoeActive
@@ -27,6 +28,7 @@ class Shoe(AggregateRoot):
         self.available = available
         self.created_at = created_at
         self.updated_at = updated_at
+        # left raise the shoe_created event here
 
     @classmethod
     def from_primitives(
@@ -50,6 +52,10 @@ class Shoe(AggregateRoot):
             created_at=CreatedAt(created_at),
             updated_at=UpdatedAt(updated_at)
         )
+
+    def modify_shoe(self):
+        # add parameters and raise the shoe_updated event
+        pass
 
 
 class ShoesRepository(ABC):
