@@ -11,6 +11,15 @@
       "name": "/"
     }
   ],
+  "permissions": [
+    {
+      "user": "atlantica",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ],
   "exchanges": [
     {
       "name": "atlantica_conf_2023_domain_events",
@@ -22,6 +31,42 @@
       "arguments": {}
     }
   ],
-  "queues": [],
-  "bindings": []
+  "queues": [
+    {
+      "name": "shoe4logistic-create-shoe-on-shoe-created",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-message-ttl": 3600000
+      }
+    },
+    {
+      "name": "shoe4logistic-update-shoe-on-shoe-updated",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-message-ttl": 3600000
+      }
+    }
+  ],
+  "bindings": [
+    {
+      "source": "atlantica_conf_2023_domain_events",
+      "vhost": "/",
+      "destination": "shoe4logistic-create-shoe-on-shoe-created",
+      "destination_type": "queue",
+      "routing_key": "atlantica.shoes_api.shoe_created",
+      "arguments": {}
+    },
+    {
+      "source": "atlantica_conf_2023_domain_events",
+      "vhost": "/",
+      "destination": "shoe4logistic-update-shoe-on-shoe-updated",
+      "destination_type": "queue",
+      "routing_key": "atlantica.shoes_api.shoe_updated",
+      "arguments": {}
+    }
+  ]
 }

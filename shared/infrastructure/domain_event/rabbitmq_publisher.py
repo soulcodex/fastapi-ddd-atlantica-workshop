@@ -1,6 +1,7 @@
-import aiormq
-import aio_pika
 from typing import Text
+
+import aio_pika
+import aiormq
 
 from shared.domain.types.domain_event import DomainEventPublisher, DomainEventSerializer, DomainEvent
 
@@ -14,14 +15,13 @@ class RabbitMqEventPublisher(DomainEventPublisher):
 
     async def publish(self, event: DomainEvent) -> None:
         try:
-            await self.client.connect()
             async with self.client.channel() as channel:
-                exchange = await channel.get_exchange(name=self._exchange)
-                await exchange.publish(message=self._message(event), routing_key=event.event_name())
+                exchange = await channel.get_exchange(name=self._exchange, ensure=False)
+                await exchange.publish(message=await self._message(event), routing_key=event.event_name())
         except aiormq.AMQPException or aiormq.AMQPError:
             pass  # Fail-over publisher like mongodb, mysql, etc ...
 
-    def _message(self, event: DomainEvent) -> aio_pika.Message:
+    async def _message(self, event: DomainEvent) -> aio_pika.Message:
         body = await self.serializer.serialize(event=event)
         return aio_pika.Message(
             body=body.encode(),

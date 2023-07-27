@@ -11,13 +11,13 @@ from shoes.application.find_shoe_by_id import FindShoeByIdQuery, FindShoeByIdQue
 from shoes.infrastructure.persistence.mysql_shoes_repository import MysqlShoesRepository
 
 from apps.shoes.dependency_injection.common import \
-    configure_mysql_connection_pool, \
+    configure_database_connection_pool, \
     configure_logger, \
     configure_query_bus
 
 
 async def shoes_repository(
-        pool: Annotated[databases.Database, Depends(configure_mysql_connection_pool)],
+        pool: Annotated[databases.Database, Depends(configure_database_connection_pool)],
         logger: Annotated[Logger, Depends(configure_logger)]
 ) -> ShoesRepository:
     return MysqlShoesRepository(table_name='shoes', pool=pool, logger=logger)

@@ -1,4 +1,5 @@
 import aiomysql
+import aio_pika
 import aiologger
 import databases
 from logging import Logger
@@ -8,6 +9,7 @@ from shared.domain.bus import query_bus, command_bus
 from shared.domain import environment_handler as environment
 from shared.domain.types import identifier_provider, time_provider
 
+from shared.infrastructure.domain_event import rabbitmq_publisher, rabbitmq_helpers, json_event_serializer
 import shared.infrastructure.mysql.async_helpers as mysql_helpers
 import shared.infrastructure.identifier_providers as id_providers
 import shared.infrastructure.time_providers as time_providers
@@ -32,7 +34,7 @@ async def configure_command_bus(
     return command_bus.AwaitableCommandBus(logger=logger)
 
 
-async def configure_mysql_connection_pool(
+async def configure_database_connection_pool(
         env: Annotated[environment.EnvironmentHandler, Depends(configure_environment_handler)]
 ) -> databases.Database:
     host, user, password, port, database = (
@@ -47,8 +49,26 @@ async def configure_mysql_connection_pool(
         return pool
 
 
+async def configure_event_publisher_connection(
+        env: Annotated[environment.EnvironmentHandler, Depends(configure_environment_handler)]
+) -> rabbitmq_publisher.RabbitMqEventPublisher:
+    host, user, password, port, virtual_host, topic, service_name = (
+        env.get_value('MESSAGE_BROKER_HOST'),
+        env.get_value('MESSAGE_BROKER_USER'),
+        env.get_value('MESSAGE_BROKER_PASSWORD'),
+        env.get_value('MESSAGE_BROKER_PORT'),
+        env.get_value('MESSAGE_BROKER_EVENTS_HOST'),
+        env.get_value('MESSAGE_BROKER_EVENTS_TOPIC'),
+        env.get_value('SERVICE_NAME')
+    )
+    rabbit_client = rabbitmq_helpers.create_rabbitmq_connection(user, password, host, port, virtual_host)
+    async for client in rabbit_client:
+        serializer = json_event_serializer.JsonDomainEventSerializer(service=service_name)
+        return rabbitmq_publisher.RabbitMqEventPublisher(exchange=topic, client=client, serializer=serializer)
+
+
 async def configure_database_arranger(
-        pool: Annotated[databases.Database, Depends(configure_mysql_connection_pool)],
+        pool: Annotated[databases.Database, Depends(configure_database_connection_pool)],
         env: Annotated[environment.EnvironmentHandler, Depends(configure_environment_handler)]
 ) -> arrangers.PersistenceArranger:
     return arrangers.MysqlPersistenceArranger(pool=pool, database=env.get_value('MYSQL_DATABASE'))

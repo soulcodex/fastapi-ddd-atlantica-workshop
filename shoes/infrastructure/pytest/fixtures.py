@@ -37,7 +37,7 @@ async def shoes_factory() -> ShoeObjectMother:
 @pytest_asyncio.fixture
 async def database_pool() -> databases.Database:
     env = await common.configure_environment_handler()
-    return await common.configure_mysql_connection_pool(env=env)
+    return await common.configure_database_connection_pool(env=env)
 
 
 @pytest_asyncio.fixture
