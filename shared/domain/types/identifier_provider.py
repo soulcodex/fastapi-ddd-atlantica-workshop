@@ -7,7 +7,7 @@ class Uuid(str):
     def value(self) -> str:
         return str(self)
 
-    def __eq__(self, other: 'Uuid') -> bool:
+    def __eq__(self, other: "Uuid") -> bool:
         return self.value == other.value
 
 
@@ -17,7 +17,7 @@ class Ulid(str):
     def value(self) -> str:
         return str(self)
 
-    def __eq__(self, other: 'Ulid') -> bool:
+    def __eq__(self, other: "Ulid") -> bool:
         return self.value == other.value
 
 

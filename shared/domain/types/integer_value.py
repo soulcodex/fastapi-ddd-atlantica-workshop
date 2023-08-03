@@ -32,7 +32,7 @@ class RangeValue:
             raise on_error
         raise Exception('Invalid value for range', self.value)
 
-    def __eq__(self, other: 'RangeValue'):
+    def __eq__(self, other: "RangeValue"):
         return self.value == other.value
 
     def guard(self):
@@ -66,16 +66,16 @@ class IntegerValue:
     def guard(self) -> None:
         pass
 
-    def __eq__(self, other: 'IntegerValue') -> bool:
+    def __eq__(self, other: "IntegerValue") -> bool:
         return self.value == other.value
 
-    def __add__(self, other: 'IntegerValue') -> int:
+    def __add__(self, other: "IntegerValue") -> int:
         return self.value + other.value
 
-    def __sub__(self, other: 'IntegerValue') -> int:
+    def __sub__(self, other: "IntegerValue") -> int:
         return self.value - other.value
 
-    def __mul__(self, other: 'IntegerValue') -> int:
+    def __mul__(self, other: "IntegerValue") -> int:
         return self.value * other.value
 
 
@@ -92,22 +92,22 @@ class OptionalIntegerValue:
     def guard(self) -> None:
         pass
 
-    def __eq__(self, other: 'OptionalIntegerValue'):
+    def __eq__(self, other: "OptionalIntegerValue"):
         return self.value == other.value
 
-    def __add__(self, other: 'OptionalIntegerValue') -> Optional[int]:
+    def __add__(self, other: "OptionalIntegerValue") -> Optional[int]:
         if self.value is not None and other.value is not None:
             return self.value + other.value
 
         return None
 
-    def __sub__(self, other: 'OptionalIntegerValue') -> Optional[int]:
+    def __sub__(self, other: "OptionalIntegerValue") -> Optional[int]:
         if self.value is not None and other.value is not None:
             return self.value - other.value
 
         return None
 
-    def __mul__(self, other: 'OptionalIntegerValue') -> Optional[int]:
+    def __mul__(self, other: "OptionalIntegerValue") -> Optional[int]:
         if self.value is not None and other.value is not None:
             return self.value * other.value
 

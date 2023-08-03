@@ -14,5 +14,5 @@ class StringValue:
     def value(self):
         return self.__value
 
-    def __eq__(self, other: 'StringValue'):
+    def __eq__(self, other: "StringValue"):
         return other.value == self.__value

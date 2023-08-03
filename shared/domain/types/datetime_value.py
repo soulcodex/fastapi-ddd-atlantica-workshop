@@ -19,7 +19,7 @@ class Timestamp:
     def millis(self) -> int:
         return datetime_to_milliseconds(self.__value)
 
-    def __eq__(self, other: 'Timestamp'):
+    def __eq__(self, other: "Timestamp"):
         return self.value == other.value
 
 

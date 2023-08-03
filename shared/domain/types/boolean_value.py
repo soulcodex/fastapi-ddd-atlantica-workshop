@@ -7,5 +7,5 @@ class BoolValue:
     def value(self) -> bool:
         return self.__value
 
-    def __eq__(self, other: 'BoolValue'):
+    def __eq__(self, other: "BoolValue"):
         return self.value == other.value

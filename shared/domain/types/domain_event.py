@@ -40,19 +40,19 @@ class ConsumableDomainEvent:
 
     @classmethod
     @abstractmethod
-    async def from_raw(cls, payload: Dict[Text, Any]) -> 'ConsumableDomainEvent':
+    async def from_raw(cls, payload: Dict[Text, Any]) -> "ConsumableDomainEvent":
         pass
 
 
 class DomainEventSerializer(ABC):
 
     @abstractmethod
-    async def serialize(self, event: DomainEvent) -> Text:
+    async def serialize(self, event: "DomainEvent") -> Text:
         pass
 
 
 class DomainEventPublisher(ABC):
 
     @abstractmethod
-    async def publish(self, event: DomainEvent) -> None:
+    async def publish(self, event: "DomainEvent") -> None:
         pass
