@@ -13,9 +13,9 @@ shoes_router = APIRouter(tags=['Shoes'])
 
 
 @shoes_router.get('/{shoe_id}', response_model=Shoe, status_code=status.HTTP_200_OK)
-async def get_shoe_by_id(shoe_id: str, qb: Annotated[ShoesQueryBus, Depends(shoes.shoes_query_bus)]):
+async def get_shoe_by_id(shoe_id: str, query_bus: Annotated[ShoesQueryBus, Depends(shoes.shoes_query_bus)]):
     try:
-        res: shoe_response.ShoeResponse = await qb.ask(find_shoe_by_id.FindShoeByIdQuery(shoe_id))
+        res: shoe_response.ShoeResponse = await query_bus.ask(find_shoe_by_id.FindShoeByIdQuery(shoe_id))
         return Shoe(**asdict(res))
     except ShoeNotExist or InvalidShoeSize as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=e.message)

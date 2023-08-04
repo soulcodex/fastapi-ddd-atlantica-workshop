@@ -1,3 +1,4 @@
+import httpx
 import pytest
 import pytest_asyncio
 from fastapi import FastAPI
@@ -32,80 +33,76 @@ class TestCreateShoeAcceptance:
     @pytest.mark.asyncio
     async def test_create_one_shoe_fails_because_route_doesnt_exists(
             self,
-            application: FastAPI,
+            http_client: httpx.AsyncClient,
             shoes_factory: ShoeObjectMother,
             shoe_json_factory: ShoeJsonFactory
     ) -> None:
-        async with AsyncClient(app=application, base_url='http://testserver') as client:
-            random_shoe = shoes_factory.random_shoe()
-            shoe_json = shoe_json_factory(random_shoe)
+        random_shoe = shoes_factory.random_shoe()
+        shoe_json = shoe_json_factory(random_shoe)
 
-            response = await client.put(url='/v1/shoes', json=shoe_json)
-            assert response.status_code == 405
-            assert response.json() == {"detail": "Method Not Allowed"}
+        response = await http_client.put(url='/v1/shoes', json=shoe_json)
+        assert response.status_code == 405
+        assert response.json() == {"detail": "Method Not Allowed"}
 
     @pytest.mark.asyncio
     async def test_create_one_random_shoe_successfully(
             self,
-            application: FastAPI,
+            http_client: httpx.AsyncClient,
             shoes_factory: ShoeObjectMother,
             shoe_json_factory: ShoeJsonFactory
     ) -> None:
-        async with AsyncClient(app=application, base_url='http://testserver') as client:
-            random_shoe = shoes_factory.random_shoe()
-            shoe_json = shoe_json_factory(random_shoe)
-            response = await client.post(url='/v1/shoes', json=shoe_json)
-            assert response.status_code == 204
+        random_shoe = shoes_factory.random_shoe()
+        shoe_json = shoe_json_factory(random_shoe)
+        response = await http_client.post(url='/v1/shoes', json=shoe_json)
+        assert response.status_code == 204
 
     @pytest.mark.asyncio
     async def test_create_one_shoe_fails_because_shoe_size_is_out_of_range(
             self,
-            application: FastAPI,
+            http_client: httpx.AsyncClient,
             shoes_factory: ShoeObjectMother,
             shoe_json_factory: ShoeJsonFactory
     ) -> None:
-        async with AsyncClient(app=application, base_url='http://testserver') as client:
-            random_shoe = shoes_factory.random_shoe()
-            shoe_json = shoe_json_factory(random_shoe)
-            shoe_json.update({'size': 46})
+        random_shoe = shoes_factory.random_shoe()
+        shoe_json = shoe_json_factory(random_shoe)
+        shoe_json.update({'size': 46})
 
-            response = await client.post(url='/v1/shoes', json=shoe_json)
-            assert response.status_code == 422
-            assert response.json() == {
-                'detail': [
-                    {
-                        'ctx': {'lt': 45},
-                        'input': 46,
-                        'loc': ['body', 'size'],
-                        'msg': 'Input should be less than 45',
-                        'type': 'less_than',
-                        'url': 'https://errors.pydantic.dev/2.0.3/v/less_than'
-                    }
-                ]
-            }
+        response = await http_client.post(url='/v1/shoes', json=shoe_json)
+        assert response.status_code == 422
+        assert response.json() == {
+            'detail': [
+                {
+                    'ctx': {'lt': 45},
+                    'input': 46,
+                    'loc': ['body', 'size'],
+                    'msg': 'Input should be less than 45',
+                    'type': 'less_than',
+                    'url': 'https://errors.pydantic.dev/2.0.3/v/less_than'
+                }
+            ]
+        }
 
     @pytest.mark.asyncio
     async def test_create_one_shoe_fails_because_color_is_not_allowed(
             self,
-            application: FastAPI,
+            http_client: httpx.AsyncClient,
             shoes_factory: ShoeObjectMother,
             shoe_json_factory: ShoeJsonFactory
     ) -> None:
-        async with AsyncClient(app=application, base_url='http://testserver') as client:
-            random_shoe = shoes_factory.random_shoe()
-            shoe_json = shoe_json_factory(random_shoe)
-            shoe_json.update({'color': 'pink'})
+        random_shoe = shoes_factory.random_shoe()
+        shoe_json = shoe_json_factory(random_shoe)
+        shoe_json.update({'color': 'pink'})
 
-            response = await client.post(url='/v1/shoes', json=shoe_json)
-            assert response.status_code == 422
-            assert response.json() == {
-                'detail': [
-                    {
-                        'ctx': {'expected': "'red','green','white','black' or 'yellow'"},
-                        'input': 'pink',
-                        'loc': ['body', 'color'],
-                        'msg': "Input should be 'red','green','white','black' or 'yellow'",
-                        'type': 'enum'
-                    }
-                ]
-            }
+        response = await http_client.post(url='/v1/shoes', json=shoe_json)
+        assert response.status_code == 422
+        assert response.json() == {
+            'detail': [
+                {
+                    'ctx': {'expected': "'red','green','white','black' or 'yellow'"},
+                    'input': 'pink',
+                    'loc': ['body', 'color'],
+                    'msg': "Input should be 'red','green','white','black' or 'yellow'",
+                    'type': 'enum'
+                }
+            ]
+        }
