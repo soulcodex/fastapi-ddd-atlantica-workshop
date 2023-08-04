@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 from abc import ABC, abstractmethod
-from typing import Text, Dict, Any, Optional, Union
+from typing import Text, Dict, Any, Optional, Union, List
 from shared.domain.types.identifier_provider import Uuid, Ulid
 
 
@@ -32,18 +32,6 @@ class DomainEvent(ABC):
         return f'<{self.__class__.__name__} {self.id.value}> ({self.payload}) ({self.metadata})'
 
 
-class ConsumableDomainEvent:
-
-    @abstractmethod
-    def aggregate_id(self) -> Uuid:
-        pass
-
-    @classmethod
-    @abstractmethod
-    async def from_raw(cls, payload: Dict[Text, Any]) -> "ConsumableDomainEvent":
-        pass
-
-
 class DomainEventSerializer(ABC):
 
     @abstractmethod
@@ -54,5 +42,5 @@ class DomainEventSerializer(ABC):
 class DomainEventPublisher(ABC):
 
     @abstractmethod
-    async def publish(self, event: "DomainEvent") -> None:
+    async def publish(self, events: List["DomainEvent"]) -> None:
         pass

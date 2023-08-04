@@ -7,7 +7,7 @@ from typing import Any, Dict, Text, Callable, Awaitable, Coroutine, Type
 class CommandHandler(ABC):
 
     @abstractmethod
-    async def handle(self, query: Dto) -> None:
+    async def handle(self, command: Dto) -> None:
         pass
 
 

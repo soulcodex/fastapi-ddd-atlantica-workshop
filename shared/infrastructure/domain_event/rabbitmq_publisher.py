@@ -1,4 +1,4 @@
-from typing import Text
+from typing import Text, List
 
 import aio_pika
 import aiormq
@@ -13,11 +13,12 @@ class RabbitMqEventPublisher(DomainEventPublisher):
         self._exchange = exchange
         self.serializer = serializer
 
-    async def publish(self, event: DomainEvent) -> None:
+    async def publish(self, events: List[DomainEvent]) -> None:
         try:
             async with self.client.channel() as channel:
                 exchange = await channel.get_exchange(name=self._exchange, ensure=False)
-                await exchange.publish(message=await self._message(event), routing_key=event.event_name())
+                for event in events:
+                    await exchange.publish(message=await self._message(event), routing_key=event.event_name())
         except aiormq.AMQPException or aiormq.AMQPError:
             pass  # Fail-over publisher like mongodb, mysql, etc ...
 
