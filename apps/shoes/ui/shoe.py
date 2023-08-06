@@ -1,5 +1,7 @@
+from typing import Text, List, Optional
+
 from pydantic import BaseModel, Field
-from typing import Text, List, Optional, Any, Literal
+
 from shoes.domain.value_object import ShoeColor, ShoeSize, ShoePrice
 
 ULID_REGEX = r"[0-7][0-9A-HJKMNP-TV-Z]{25}"

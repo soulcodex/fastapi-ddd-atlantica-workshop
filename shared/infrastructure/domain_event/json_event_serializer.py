@@ -11,7 +11,7 @@ class JsonDomainEventSerializer(DomainEventSerializer):
 
     async def serialize(self, event: DomainEvent) -> Text:
         attributes = event.payload
-        attributes['id'] = event.aggregate_id.value
+        attributes['id'] = str(event.aggregate_id)
         metadata = event.metadata
 
         json_event = {

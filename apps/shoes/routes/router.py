@@ -1,13 +1,14 @@
-from starlette import status
 from dataclasses import asdict
-from typing_extensions import Annotated
-from apps.shoes.ui.shoe import Shoe, CreateShoe
-from apps.shoes.dependency_injection import shoes
-from fastapi import APIRouter, HTTPException, Depends
 
-from shoes.domain.types import ShoesQueryBus
-from shoes.domain.errors import ShoeNotExist, InvalidShoeSize
+from fastapi import APIRouter, HTTPException, Depends
+from starlette import status
+from typing_extensions import Annotated
+
+from apps.shoes.dependency_injection import shoes
+from apps.shoes.ui.shoe import Shoe, CreateShoe
 from shoes.application import find_shoe_by_id, shoe_response
+from shoes.domain.errors import ShoeNotExist, InvalidShoeSize
+from shoes.domain.types import ShoesQueryBus
 
 shoes_router = APIRouter(tags=['Shoes'])
 

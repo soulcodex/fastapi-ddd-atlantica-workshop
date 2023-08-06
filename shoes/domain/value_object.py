@@ -1,9 +1,10 @@
 import enum
 from typing import cast
-from shoes.domain.errors import InvalidShoeSize
+
 from shared.domain.types.boolean_value import BoolValue
+from shared.domain.types.integer_value import RangeValue, PriceValue
 from shared.domain.types.string_value import StringValue
-from shared.domain.types.integer_value import RangeValue, IntegerValue, PriceValue
+from shoes.domain.errors import InvalidShoeSize
 
 
 class ShoeName(StringValue):

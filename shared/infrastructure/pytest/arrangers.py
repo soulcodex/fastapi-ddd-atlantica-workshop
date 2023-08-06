@@ -1,8 +1,7 @@
-import aiomysql
-import databases
-from typing import List, Text
 from abc import ABC, abstractmethod
-from databases.interfaces import Record
+from typing import List, Text
+
+import databases
 
 
 class PersistenceArranger(ABC):

@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from typing import Optional
+
 from shoes.infrastructure.fastapi.lifespan_handler import lifespan_manager
 
 

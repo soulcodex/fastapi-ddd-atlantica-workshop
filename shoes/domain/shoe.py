@@ -1,7 +1,7 @@
-from typing import Text
-from datetime import datetime
 from abc import ABC, abstractmethod
-from shoes.domain.events import ShoeCreated
+from datetime import datetime
+from typing import Text
+
 from shared.domain.types.aggregate_root import AggregateRoot
 from shared.domain.types.datetime_value import CreatedAt, UpdatedAt
 from shoes.domain.value_object import ShoeId, ShoeName, ShoeSize, ShoeColor, ShoePrice, ShoeActive
