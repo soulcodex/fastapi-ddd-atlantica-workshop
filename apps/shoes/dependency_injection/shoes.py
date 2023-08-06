@@ -18,7 +18,7 @@ from apps.shoes.dependency_injection.common import \
     configure_logger, \
     configure_query_bus, \
     configure_command_bus, \
-    configure_event_publisher, \
+    configure_event_publisher_connection, \
     configure_time_provider
 
 
@@ -39,7 +39,7 @@ async def shoes_query_bus(
 
 async def configure_create_shoe_command_handler(
         repository: Annotated[ShoesRepository, Depends(shoes_repository)],
-        publisher: Annotated[domain_event.DomainEventPublisher, Depends(configure_event_publisher)],
+        publisher: Annotated[domain_event.DomainEventPublisher, Depends(configure_event_publisher_connection)],
         t_provider: Annotated[time_provider.TimeProvider, Depends(configure_time_provider)]
 ) -> CreateShoeCommandHandler:
     return CreateShoeCommandHandler(

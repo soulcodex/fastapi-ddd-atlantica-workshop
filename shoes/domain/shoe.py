@@ -4,6 +4,7 @@ from typing import Text
 
 from shared.domain.types.aggregate_root import AggregateRoot
 from shared.domain.types.datetime_value import CreatedAt, UpdatedAt
+from shoes.domain.events import ShoeCreated
 from shoes.domain.value_object import ShoeId, ShoeName, ShoeSize, ShoeColor, ShoePrice, ShoeActive
 
 
@@ -52,6 +53,21 @@ class Shoe(AggregateRoot):
             created_at=CreatedAt(created_at),
             updated_at=UpdatedAt(updated_at)
         )
+
+    @classmethod
+    def create(
+            cls,
+            shoe_id: Text,
+            name: Text,
+            color: Text,
+            size: int,
+            price: int,
+            available: bool,
+            now: datetime
+    ) -> 'Shoe':
+        shoe = cls.from_primitives(shoe_id, name, color, size, price, available, now, now)
+        shoe.record(ShoeCreated.from_shoe(shoe))
+        return shoe
 
     def modify_shoe(self):
         # add parameters and raise the shoe_updated event
