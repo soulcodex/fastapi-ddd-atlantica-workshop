@@ -49,7 +49,7 @@ class MysqlShoesRepository(ShoesRepository, MysqlAsyncRepository):
             item: Mapping = row._mapping
             return Shoe.from_primitives(**{**item, 'size': int(item.get('size'))})
 
-    async def save(self, shoe: 'Shoe') -> None:
+    async def save(self, shoe: "Shoe") -> None:
         async with self._pool.connection() as connection:
             builder = await self.query_builder()
             fields = await self.fields_values_list(shoe)

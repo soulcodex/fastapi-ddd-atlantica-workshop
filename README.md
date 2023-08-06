@@ -84,9 +84,9 @@ ___
       database -> api).
 * infrastructure :open_file_folder: :mag: :office:
     * Database connections (database pool, single reader, reader and writer).
-    * Cache adapters (Redis, Elastic cache, DynamoDB, etc..).
+    * Cache adapters (Redis, Elastic cache, Key value database etc..).
     * Repositories implementations (MySQL, MS SQL Server, PostgreSQL, Elasticsearch, Redis, MongoDB, etc...).
-    * Messaging system connection and publishers (SNS, SQS, RabbitMQ, Kafka, Red Panda, Snowflake, etc...).
+    * Messaging system connection and publishers (SNS, SQS, RabbitMQ, Kafka, Red Panda, etc...).
     * Identifiers generation (UUID and ULID generator library implementation).
     * Time providers (Provider which generate new instances of objects in charge to handle the time.).
     * and so on.
@@ -98,7 +98,7 @@ ___
     * Domain errors base definitions and severities.
 * infrastructure :open_file_folder: :mag: :office:
     * Shared logic to implement infrastructure components
-        * Base repositories implementations or infra ports.
+        * Base repositories implementations or infrastructure interfaces.
         * Database connection pools and helpers.
         * Providers of something like time or identifiers.
         * Test library shared implementations across all bounded contexts.

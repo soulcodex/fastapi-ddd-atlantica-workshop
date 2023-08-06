@@ -55,6 +55,11 @@ class TestCreateShoeAcceptance:
         shoe_json = shoe_json_factory(random_shoe)
         response = await http_client.post(url='/v1/shoes', json=shoe_json)
         assert response.status_code == 204
+        shoe_response = await http_client.get(url=f'/v1/shoes/{random_shoe.id.value}')
+        assert shoe_response.status_code == 200
+        shoe_response_json = shoe_response.json()
+        assert shoe_response_json.get('id') == random_shoe.id.value
+        assert shoe_response_json.get('name') == random_shoe.name.value
 
     @pytest.mark.asyncio
     async def test_create_one_shoe_fails_because_shoe_size_is_out_of_range(

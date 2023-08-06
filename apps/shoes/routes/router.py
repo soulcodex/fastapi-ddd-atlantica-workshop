@@ -18,8 +18,10 @@ async def get_shoe_by_id(shoe_id: str, query_bus: Annotated[ShoesQueryBus, Depen
     try:
         res: shoe_response.ShoeResponse = await query_bus.ask(find_shoe_by_id.FindShoeByIdQuery(shoe_id))
         return Shoe(**asdict(res))
-    except ShoeNotExist or InvalidShoeSize as e:
+    except ShoeNotExist as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=e.message)
+    except InvalidShoeSize as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=e.message)
 
 
 @shoes_router.post('', response_model=None, status_code=status.HTTP_204_NO_CONTENT)

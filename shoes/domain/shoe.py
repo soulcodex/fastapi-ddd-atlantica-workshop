@@ -41,7 +41,7 @@ class Shoe(AggregateRoot):
             available: bool,
             created_at: datetime,
             updated_at: datetime
-    ) -> 'Shoe':
+    ) -> "Shoe":
         return cls(
             shoe_id=ShoeId(id),
             name=ShoeName(name),
@@ -61,9 +61,9 @@ class Shoe(AggregateRoot):
 class ShoesRepository(ABC):
 
     @abstractmethod
-    async def find(self, shoe_id: ShoeId) -> 'Shoe':
+    async def find(self, shoe_id: ShoeId) -> "Shoe":
         pass
 
     @abstractmethod
-    async def save(self, shoe: 'Shoe') -> None:
+    async def save(self, shoe: "Shoe") -> None:
         pass
