@@ -10,6 +10,7 @@
 ## Introduction :writing_hand:
 
 Welcome dear coder to the official repository for the tech talk series called **"FastAPI from Zero to Hero"**.
+
 My name is **Roberto García** and I really hope you can enjoy these resources to keep growing in your career path as a
 python programmer specifically developing **REST APIs** using **FastAPI** as a framework.
 
@@ -25,7 +26,32 @@ ___
 * Python >= 3.8
 * docker
 * Starving for knowledge (The most important :smile:)
+___
+## Getting started :checkered_flag:
 
+```bash
+# Clone the repository
+git clone https://github.com/soulcodex/fastapi-ddd-atlantica-workshop.git shoes-store-api
+
+# Setup the repository
+cd shoes-store-api
+make shoes-api
+make shoes-api-bash
+```
+___
+## Available commands :running: :fire:
+
+* Run the `make help` command to get a list of all available commands
+
+```text
+shoes-api                      Setup shoes api dependencies.
+shoes-api-bash                 Open a new bash terminal inside shoes-api container.
+shoes-api-docker-stop          Down docker containers related with the shoes service.
+shoes-api-package-add          Add package to our shoes api deps.
+shoes-api-package-remove       Remove package from our shoes api deps.
+shoes-api-unit-test            Run unitary tests suite for shoes application.
+shoes-api-acceptance-test      Run acceptance tests suite for shoes application.
+```
 ___
 
 ## Project folders structure :file_folder:
@@ -58,13 +84,13 @@ ___
 
 ### apps :open_file_folder: :arrow_double_down:
 
-* Basically is the folder to define all the entrypoints for those applications that which live in this repository
-  following a monorepo philosophy.
+* Basically is the folder to define all the entrypoints for those applications which live in this repository
+  following a monorepo structure.
 * Defines dependency injection graph and bootstrap it all of them.
 * Framework entrypoints and all the most external things which needs pieces which comes from the framework (routers,
   middlewares, pydantic models, etc...)
-* Docker :whale: things (development or deployment things)
-* Database migration files for each bounded context.
+* Docker :whale: things (development or deployment things related with Docker)
+* Database migration files on each bounded context folders.
 
 ### shoes == module == bounded context :open_file_folder: :shoe:
 
@@ -100,9 +126,9 @@ ___
     * Shared logic to implement infrastructure components
         * Base repositories implementations or infrastructure interfaces.
         * Database connection pools and helpers.
-        * Providers of something like time or identifiers.
+        * Providers (time, identifiers and so on).
         * Test library shared implementations across all bounded contexts.
-        * Middlewares or something specific to use with the framework.
+        * Shared middlewares or something specific to use with the framework.
         * Pydantic base implementations and models.
 
 ### tests :open_file_folder: :gem:
@@ -110,29 +136,3 @@ ___
 * Acceptance tests (HTTP calls, E2E, validate input and output with all the actors)
     * Typology of test in charge to validate how our components works together validating if the code / app do the
       expected behavior or not.
-___
-## Getting started :checkered_flag:
-
-```bash
-# Clone the repository
-git clone https://github.com/soulcodex/fastapi-ddd-atlantica-workshop.git shoes-store-api
-
-# Setup the repository
-cd shoes-store-api
-make shoes-api
-make shoes-api-bash
-```
-
-## Available commands :running: :fire:
-
-* Run the `make help` command to get a list of all available commands
-
-```text
-shoes-api                      Setup shoes api dependencies.
-shoes-api-bash                 Open a new bash terminal inside shoes-api container.
-shoes-api-docker-stop          Down docker containers related with the shoes service.
-shoes-api-package-add          Add package to our shoes api deps.
-shoes-api-package-remove       Remove package from our shoes api deps.
-shoes-api-unit-test            Run unitary tests suite for shoes application.
-shoes-api-acceptance-test      Run acceptance tests suite for shoes application.
-```
