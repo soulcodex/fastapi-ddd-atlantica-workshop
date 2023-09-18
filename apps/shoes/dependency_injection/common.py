@@ -9,6 +9,9 @@ from typing_extensions import Annotated
 import shared.infrastructure.identifier_providers as id_providers
 import shared.infrastructure.mysql.async_helpers as mysql_helpers
 import shared.infrastructure.time_providers as time_providers
+import shared.infrastructure.bus.command_bus as command_bus_impl
+import shared.infrastructure.bus.query_bus as query_bus_impl
+
 from shared.domain import environment_handler as environment
 from shared.domain.bus import query_bus, command_bus
 from shared.domain.types import identifier_provider, time_provider
@@ -25,13 +28,15 @@ async def configure_environment_handler() -> environment.EnvironmentHandler:
 
 
 async def configure_query_bus(
-        logger: Annotated[Logger, Depends(configure_logger)]) -> query_bus.QueryBus:
-    return query_bus.AwaitableQueryBus(logger=logger)
+        logger: Annotated[Logger, Depends(configure_logger)]
+) -> query_bus.QueryBus:
+    return query_bus_impl.AwaitableQueryBus(logger=logger)
 
 
 async def configure_command_bus(
-        logger: Annotated[Logger, Depends(configure_logger)]) -> command_bus.CommandBus:
-    return command_bus.AwaitableCommandBus(logger=logger)
+        logger: Annotated[Logger, Depends(configure_logger)]
+) -> command_bus.CommandBus:
+    return command_bus_impl.AwaitableCommandBus(logger=logger)
 
 
 async def configure_database_connection_pool(
