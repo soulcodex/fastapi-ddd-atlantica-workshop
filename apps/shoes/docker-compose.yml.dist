@@ -19,6 +19,7 @@ services:
       - "8000:8000"
     depends_on:
       - mysql
+      - message_broker
   mysql:
     image: mysql:8.0.33
     platform: 'linux/amd64'
