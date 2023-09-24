@@ -7,6 +7,12 @@
 </div>
 <h6 style="text-align: center; font-size: 2rem" align="center">by Python Coruña</h6>
 
+## Slides
+
+There are available some [slides](https://bit.ly/fastapi-atlanticaconf-2023-slides) to get more context about the workshop and to be used as source of information as much you want as well. 
+
+_**NOTE:** Thanks for your attendance to the workshop :heart:, I really enjoyed doing all this stuff, sharing some knowledge and good time_.
+
 ## Introduction :writing_hand:
 
 Welcome dear coder to the official repository for the tech talk series called **"FastAPI from Zero to Hero"**.
